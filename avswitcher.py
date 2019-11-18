@@ -100,7 +100,7 @@ def query_av_state(host, port):
     avm = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
     avm.connect((host, port))
     query_state = 'a56c140082010100000000000000000053fc01ae'.decode('hex')
-    avm.send(query_state)
+    avm.send(query_state.encode())
     current_state = avm.recv(100)
     outputs = {}
     for indx, ch in enumerate(current_state):
@@ -113,7 +113,7 @@ def set_av_state(host, port, input, output):
     avm.connect((host, port))
     cmd = "%sv%s." % (input, output)
     print("sending cmd: %s to %s:%d" % (cmd, host, port))
-    avm.send(cmd)
+    avm.send(cmd.encode())
 
 
 @app.route('/audio', methods=['GET', 'POST'])
