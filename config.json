@@ -1,0 +1,22 @@
+{
+    "WEB_SERVICE_PORT": 3100,
+    "WEB_SERVICE_DEBUG": false,
+    "AV_SWITCH_IP": "192.168.5.102",
+    "AV_SWITCH_PORT": 7000,
+    "AUDIO_MIXER_IP": "192.168.5.178",
+    "DEFAULT_AUDIO_SCENE": {
+        "file": "Default.scn",
+        "description": "Default setting for public meetings"
+    },
+    "INIT_AUDIO_SCENE": {
+        "file": "Initial.scn",
+        "description": "Scene used to initialize mixer settings"
+    },
+    "XAIRSETSCENE": "/usr/bin/XAirSetScene",
+    "scenes": {
+        "Default" : {
+            "file": "Default.scn",
+            "description": "Default setting for public meetings"
+        }
+    }
+}

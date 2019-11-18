@@ -1,0 +1,251 @@
+<!doctype html>
+<html>
+<head>
+<title>Hedgcoxe A/V Scene Switcher</title>
+<style>
+.controlpanel {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: 5px;
+}
+.controlpanelbutton__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 1px solid black;
+    box-shadow: 9px 9px #999;
+}
+.controlpanelbutton__img:hover {
+    border: 1px solid black;
+    box-shadow: 9px 9px #9f9;
+}
+.controlpanelbutton__img:active {
+    background-color: #eee;
+    border: 1px solid black;
+    box-shadow: 5px 5px #555;
+    transform: translateY(5px);
+}
+</style>
+</head>
+<body>
+<header>
+</header>
+<nav>
+</nav>
+<div class='controlpanel'>
+<figure class='controlpanelbutton'>
+  <img src='/img/Default.png' class='controlpanelbutton__img' alt='Regular Meeting' title='Regular Meeting' onclick='loadScene(1);'>
+</figure>
+<figure class='controlpanelbutton'>
+  <img src='/img/2MeetingClassroom2Mic.png' class='controlpanelbutton__img' alt='Aux Classroom Meeting with Both Wireless Mics' title='Aux Classroom Meeting with Both Wireless Mics' onclick='loadScene(2);'>
+</figure>
+<figure class='controlpanelbutton'>
+  <img src='/img/1MeetingClassroom2Mic.png' class='controlpanelbutton__img' alt='One Meeting, Aux Classroom with Both Wireless Mics' title='One Meeting, Aux Classroom with Both Wireless Mics' onclick='loadScene(3);'>
+</figure>
+<figure class='controlpanelbutton'>
+  <img src='/img/2MeetingClassroom1Mic.png' class='controlpanelbutton__img' alt='Aux Classroom Meeting with Blue Wireless Mic' title='Aux Classroom Meeting with Blue Wireless Mic' onclick='loadScene(4);'>
+</figure>
+<figure class='controlpanelbutton'>
+  <img src='/img/2MeetingClassroom1MicAndLibrary1Mic.png' class='controlpanelbutton__img' alt='Aux Classroom and Library Tied Together' title='Aux Classroom and Library Tied Together' onclick='loadScene(5);'>
+</figure>
+<figure class='controlpanelbutton'>
+  <img src='/img/2MeetingClassroom2MicAndLibrary0Mic.png' class='controlpanelbutton__img' alt='Aux Classroom with Both Wireless Mics Tied to Library' title='Aux Classroom with Both Wireless Mics Tied to Library' onclick='loadScene(6);'>
+</figure>
+<figure class='controlpanelbutton'>
+  <img src='/img/3MeetingClassroom1MicAndLibrary1Mic.png' class='controlpanelbutton__img' alt='Three Meetings' title='Three Meetings' onclick='loadScene(7);'>
+</figure>
+<figure class='controlpanelbutton'>
+  <img src='/img/3MeetingClassroom2MicAndLibrary0Mic.png' class='controlpanelbutton__img' alt='Three Meetings with Aux Classroom with Both Wireless Mics' title='Three Meetings with Aux Classroom with Both Wireless Mics' onclick='loadScene(8);'>
+</figure>
+<figure class='controlpanelbutton'>
+  <img src='/img/3MeetingClassroom0MicAndLibrary0Mic.png' class='controlpanelbutton__img' alt='Three Meetings with all Wireless in the Main Auditorium' title='Three Meetings with all Wireless in the Main Auditorium' onclick='loadScene(9);'>
+</figure>
+</div>
+<footer>
+</footer>
+<script type='text/javascript'>
+var scenes = [];
+scenes[0] = {
+    'videoChannels': [
+       {
+           'input': '1',
+           'output': '1,2'
+       },
+       {
+           'input': '2',
+           'output': '3,4,5,6,7,8'
+       }
+    ],
+    'audioScene': 'Default'
+};
+scenes[1] = {
+    'videoChannels': [
+       {
+           'input': '1',
+           'output': '1,2'
+       },
+       {
+           'input': '2',
+           'output': '3,4,5,6,7,8'
+       }
+    ],
+    'audioScene': 'Default'
+};
+scenes[2] = {
+    'videoChannels': [
+       {
+           'input': '1',
+           'output': '1,2'
+       },
+       {
+           'input': '2',
+           'output': '3,5,6,7,8'
+       },
+       {
+           'input': '3',
+           'output': '4'
+       }
+    ],
+    'audioScene': '2MeetingClassroom2Mic'
+};
+scenes[3] = {
+    'videoChannels': [
+       {
+           'input': '1',
+           'output': '1,2'
+       },
+       {
+           'input': '2',
+           'output': '3,4,5,6,7,8'
+       }
+    ],
+    'audioScene': '1MeetingClassroom2Mic'
+};
+scenes[4] = {
+    'videoChannels': [
+       {
+           'input': '1',
+           'output': '1,2'
+       },
+       {
+           'input': '2',
+           'output': '3,5,6,7,8'
+       },
+       {
+           'input': '3',
+           'output': '4'
+       }
+    ],
+    'audioScene': '2MeetingClassroom1Mic'
+};
+scenes[5] = {
+    'videoChannels': [
+       {
+           'input': '1',
+           'output': '1,2'
+       },
+       {
+           'input': '2',
+           'output': '3,6,7,8'
+       },
+       {
+           'input': '3',
+           'output': '4,5'
+       }
+    ],
+    'audioScene': '2MeetingClassroom1MicAndLibrary1Mic'
+};
+scenes[6] = {
+    'videoChannels': [
+       {
+           'input': '1',
+           'output': '1,2'
+       },
+       {
+           'input': '2',
+           'output': '3,6,7,8'
+       },
+       {
+           'input': '3',
+           'output': '4,5'
+       }
+    ],
+    'audioScene': '2MeetingClassroom2MicAndLibrary0Mic'
+};
+scenes[7] = {
+    'videoChannels': [
+       {
+           'input': '1',
+           'output': '1,2'
+       },
+       {
+           'input': '2',
+           'output': '3,6,7,8'
+       },
+       {
+           'input': '3',
+           'output': '4'
+       },
+       {
+           'input': 8,
+           'output': '5'
+       }
+    ],
+    'audioScene': '3MeetingClassroom1MicAndLibrary1Mic'
+};
+scenes[8] = {
+    'videoChannels': [
+       {
+           'input': '1',
+           'output': '1,2'
+       },
+       {
+           'input': '2',
+           'output': '3,6,7,8'
+       },
+       {
+           'input': '3',
+           'output': '4'
+       },
+       {
+           'input': 8,
+           'output': '5'
+       }
+    ],
+    'audioScene': '3MeetingClassroom2MicAndLibrary0Mic'
+};
+scenes[9] = {
+    'videoChannels': [
+       {
+           'input': '1',
+           'output': '1,2'
+       },
+       {
+           'input': '2',
+           'output': '3,6,7,8'
+       },
+       {
+           'input': '3',
+           'output': '4'
+       },
+       {
+           'input': 8,
+           'output': '5'
+       }
+    ],
+    'audioScene': '3MeetingClassroom0MicAndLibrary0Mic'
+};
+
+
+function loadScene(sceneIndx) {
+    var jsonSubmit = JSON.stringify(scenes[sceneIndx]);
+    console.log('submitting: ' + jsonSubmit);
+    var httpPost = new XMLHttpRequest();
+    httpPost.open("POST", '/scene', true);
+    httpPost.setRequestHeader('Content-Type', 'application/json');
+    httpPost.send(jsonSubmit);
+}
+</script>
+</body>
+</html>
