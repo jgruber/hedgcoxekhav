@@ -16,7 +16,19 @@
     "scenes": {
         "Default" : {
             "file": "Default.scn",
-            "description": "Default setting for public meetings"
+            "imgagefile": "Default.png",
+            "description": "Default setting for public meetings",
+            "videochannels": [
+                {
+                    "input": "1",
+                    "output": "1,2"
+                },
+                {
+                    "input": "2",
+                    "output": "3,4,5,6,7,8"
+                }
+            ],
+            "audioscene":  "Default"
         }
     }
 }

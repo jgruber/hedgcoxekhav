@@ -43,18 +43,18 @@ app = Flask('avswitcher')
 def scene_service():
     scene_data = request.json
     print('setting A/V scene %s' % json.dumps(scene_data))
-    if 'videoChannels' in scene_data:
-        for ch in scene_data['videoChannels']:
+    if 'videochannels' in scene_data:
+        for ch in scene_data['videochannels']:
             set_av_state(CONFIG['AV_SWITCH_IP'], CONFIG['AV_SWITCH_PORT'], ch['input'], ch['output'])
-    if 'audioScene' in scene_data:
-        if scene_data['audioScene'] in CONFIG['scenes']:
+    if 'audioscene' in scene_data:
+        if scene_data['audioscene'] in CONFIG['scenes']:
             try:
-                set_audio_scene(CONFIG['AUDIO_MIXER_IP'], scene_data['audioScene'])
+                set_audio_scene(CONFIG['AUDIO_MIXER_IP'], scene_data['audioscene'])
             except Exception as e:
                 result = {'error': e.message}
                 return jsonify(result), 500
         else:
-            result = {'error': "no audio scene %s found" % scene_data['audioScene']}
+            result = {'error': "no audio scene %s found" % scene_data['audioscene']}
             return jsonify(result), 404
     return jsonify({})
 
