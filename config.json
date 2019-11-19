@@ -9,7 +9,7 @@
         "description": "Default setting for public meetings"
     },
     "INIT_AUDIO_SCENE": {
-        "file": "Initial.scn",
+        "file": "Initialized.scn",
         "description": "Scene used to initialize mixer settings"
     },
     "XAIRSETSCENE": "/usr/bin/XAirSetScene",

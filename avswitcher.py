@@ -15,13 +15,11 @@ CONFIG = {
     'AV_SWITCH_PORT': 7000,
     'AUDIO_MIXER_IP': '192.168.5.178',
     'DEFAULT_AUDIO_SCENE': {
-        'name': 'Default',
         'file': 'Default.scn',
         'description': 'Default setting for public meetings'
     },
     'INIT_AUDIO_SCENE': {
-        'name': 'Initial',
-        'file': 'Initial.scn',
+        'file': 'Initialized.scn',
         'description': 'Scene used to initialize mixer settings'
     },
     'XAIRSETSCENE': '/root/XAirSetScene',
@@ -47,13 +45,16 @@ def scene_service():
         for ch in scene_data['videochannels']:
             set_av_state(CONFIG['AV_SWITCH_IP'], CONFIG['AV_SWITCH_PORT'], ch['input'], ch['output'])
     if 'audioscene' in scene_data:
-        if scene_data['audioscene'] in CONFIG['scenes']:
-            try:
-                set_audio_scene(CONFIG['AUDIO_MIXER_IP'], scene_data['audioscene'])
-            except Exception as e:
-                result = {'error': e.message}
-                return jsonify(result), 500
-        else:
+        scene_found = False
+        for scenename in CONFIG['scenes'].keys():
+            if scene_data['audioscene'] == CONFIG['scenes'][scenename]['audioscene']:
+                scene_found = True
+                try:
+                    set_audio_scene(CONFIG['AUDIO_MIXER_IP'], scenename)
+                except Exception as e:
+                    result = {'error': e.message}
+                    return jsonify(result), 500
+        if not scene_found:
             result = {'error': "no audio scene %s found" % scene_data['audioscene']}
             return jsonify(result), 404
     return jsonify({})
