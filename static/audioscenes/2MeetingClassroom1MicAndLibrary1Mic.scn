@@ -7,7 +7,7 @@
 /config/mute OFF OFF OFF OFF
 /ch/01/config "CL PC L" 12 In01 U01
 /ch/01/preamp +3.0 ON OFF OFF  20
-/ch/01/gate OFF GATE -38.0 60.0 1  502 983 SELF
+/ch/01/gate OFF EXP2 -38.0 60.0 1  502 983 SELF
 /ch/01/gate/filter OFF 3.0 990.9
 /ch/01/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
 /ch/01/dyn/filter OFF 3.0 990.9
@@ -17,13 +17,13 @@
 /ch/01/eq/2 PEQ 654.7 -10.2 2.0
 /ch/01/eq/3 PEQ 3k55 +10.5 2.0
 /ch/01/eq/4 HShv 17k41 -11.0 2.0
-/ch/01/mix OFF   -oo ON -100
-/ch/01/mix/01 -30.0 OFF POST -100
-/ch/01/mix/02 -30.0 OFF POST
+/ch/01/mix ON  +0.1 ON -100
+/ch/01/mix/01   -oo OFF POST -100
+/ch/01/mix/02   -oo OFF POST
 /ch/01/mix/03   -oo OFF POSTEQ -100
 /ch/01/mix/04   -oo OFF POSTEQ
-/ch/01/mix/05   -oo OFF POST -100
-/ch/01/mix/06   -oo OFF POST
+/ch/01/mix/05 -12.0 OFF POST -100
+/ch/01/mix/06 -12.0 OFF POST
 /ch/01/mix/07   -oo OFF POST
 /ch/01/mix/08   -oo OFF POST
 /ch/01/mix/09   -oo OFF POST
@@ -32,7 +32,7 @@
 /ch/01/automix OFF  +0.0
 /ch/02/config "CL PC R" 12 In02 U02
 /ch/02/preamp +3.0 ON OFF OFF  20
-/ch/02/gate OFF GATE -38.0 60.0 1  502 983 SELF
+/ch/02/gate OFF EXP2 -38.0 60.0 1  502 983 SELF
 /ch/02/gate/filter OFF 3.0 990.9
 /ch/02/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
 /ch/02/dyn/filter OFF 3.0 990.9
@@ -42,13 +42,13 @@
 /ch/02/eq/2 PEQ 654.7 -10.2 2.0
 /ch/02/eq/3 PEQ 3k55 +10.5 2.0
 /ch/02/eq/4 HShv 17k41 -11.0 2.0
-/ch/02/mix OFF   -oo ON +100
-/ch/02/mix/01 -30.0 OFF POST +100
-/ch/02/mix/02 -30.0 OFF POST
+/ch/02/mix ON  +0.1 ON +100
+/ch/02/mix/01   -oo OFF POST +100
+/ch/02/mix/02   -oo OFF POST
 /ch/02/mix/03   -oo OFF POSTEQ +100
 /ch/02/mix/04   -oo OFF POSTEQ
-/ch/02/mix/05   -oo OFF POST +100
-/ch/02/mix/06   -oo OFF POST
+/ch/02/mix/05 -12.0 OFF POST +100
+/ch/02/mix/06 -12.0 OFF POST
 /ch/02/mix/07   -oo OFF POST
 /ch/02/mix/08   -oo OFF POST
 /ch/02/mix/09   -oo OFF POST
@@ -57,7 +57,7 @@
 /ch/02/automix OFF  +0.0
 /ch/03/config "CLWMIC" 4 In03 U03
 /ch/03/preamp -18.0 OFF OFF ON 101
-/ch/03/gate ON EXP2 -44.0 60.0 16  126 983 SELF
+/ch/03/gate ON EXP3 -44.0 60.0 16  126 983 SELF
 /ch/03/gate/filter ON 3.0 611.0
 /ch/03/dyn OFF COMP PEAK LOG -25.5 3.0 2 6.00 10 10.0 151 100 SELF OFF
 /ch/03/dyn/filter ON 3.0 611.0
@@ -68,12 +68,12 @@
 /ch/03/eq/3 PEQ 990.9 +0.50 2.0
 /ch/03/eq/4 HCut 2k99 -1.50 2.0
 /ch/03/mix ON   0.0 OFF +0
-/ch/03/mix/01   0.0 OFF POST +0
+/ch/03/mix/01   -oo OFF POST +0
 /ch/03/mix/02   -oo OFF POST
 /ch/03/mix/03   -oo OFF POSTEQ +0
 /ch/03/mix/04   -oo OFF POSTEQ
-/ch/03/mix/05   -oo OFF POST +0
-/ch/03/mix/06   -oo OFF POST
+/ch/03/mix/05   0.0 OFF POST +0
+/ch/03/mix/06   0.0 OFF POST
 /ch/03/mix/07   -oo OFF POST
 /ch/03/mix/08   -oo OFF POST
 /ch/03/mix/09   -oo OFF POST
@@ -82,7 +82,7 @@
 /ch/03/automix OFF  +0.0
 /ch/04/config "CLMIC" 12 In04 U04
 /ch/04/preamp -18.0 OFF OFF ON 101
-/ch/04/gate ON EXP2 -44.0 60.0 16  126 983 SELF
+/ch/04/gate ON EXP3 -44.0 60.0 16  126 983 SELF
 /ch/04/gate/filter ON 3.0 611.0
 /ch/04/dyn OFF COMP PEAK LOG -25.5 3.0 2 6.00 10 10.0 151 100 SELF OFF
 /ch/04/dyn/filter ON 3.0 611.0
@@ -93,12 +93,12 @@
 /ch/04/eq/3 PEQ 990.9 +0.00 2.0
 /ch/04/eq/4 HCut 2k99 -11.0 2.0
 /ch/04/mix ON   0.0 ON +0
-/ch/04/mix/01   0.0 OFF POST +0
+/ch/04/mix/01   -oo OFF POST +0
 /ch/04/mix/02   -oo OFF POST
 /ch/04/mix/03   -oo OFF POSTEQ +0
 /ch/04/mix/04   -oo OFF POSTEQ
-/ch/04/mix/05   -oo OFF POST +0
-/ch/04/mix/06   -oo OFF POST
+/ch/04/mix/05   0.0 OFF POST +0
+/ch/04/mix/06   0.0 OFF POST
 /ch/04/mix/07   -oo OFF POST
 /ch/04/mix/08   -oo OFF POST
 /ch/04/mix/09   -oo OFF POST
@@ -107,7 +107,7 @@
 /ch/04/automix OFF  +0.0
 /ch/05/config "LWMIC" 1 In05 U05
 /ch/05/preamp -18.0 OFF OFF ON 101
-/ch/05/gate ON EXP2 -44.0 60.0 16  126 983 SELF
+/ch/05/gate ON EXP3 -44.0 60.0 16  126 983 SELF
 /ch/05/gate/filter ON 3.0 611.0
 /ch/05/dyn OFF COMP PEAK LOG -25.5 3.0 2 6.00 10 10.0 151 100 SELF OFF
 /ch/05/dyn/filter ON 3.0 611.0
@@ -119,11 +119,11 @@
 /ch/05/eq/4 HCut 2k99 -0.50 2.0
 /ch/05/mix ON   0.0 ON +0
 /ch/05/mix/01   -oo OFF POST +0
-/ch/05/mix/02   0.0 OFF POST
+/ch/05/mix/02   -oo OFF POST
 /ch/05/mix/03   -oo OFF POSTEQ +0
 /ch/05/mix/04   -oo OFF POSTEQ
-/ch/05/mix/05   -oo OFF POST +0
-/ch/05/mix/06   -oo OFF POST
+/ch/05/mix/05   0.0 OFF POST +0
+/ch/05/mix/06   0.0 OFF POST
 /ch/05/mix/07   -oo OFF POST
 /ch/05/mix/08   -oo OFF POST
 /ch/05/mix/09   -oo OFF POST
@@ -132,7 +132,7 @@
 /ch/05/automix OFF  +0.0
 /ch/06/config "LMIC" 9 In06 U06
 /ch/06/preamp -18.0 OFF OFF ON 101
-/ch/06/gate ON EXP2 -44.0 60.0 16  126 983 SELF
+/ch/06/gate ON EXP3 -44.0 60.0 16  126 983 SELF
 /ch/06/gate/filter ON 3.0 611.0
 /ch/06/dyn OFF COMP PEAK LOG -38.5 3.0 2 6.00 10 10.0 151 100 SELF OFF
 /ch/06/dyn/filter ON 3.0 611.0
@@ -144,11 +144,11 @@
 /ch/06/eq/4 HCut 2k99 -15.0 2.0
 /ch/06/mix ON   0.0 ON +0
 /ch/06/mix/01   -oo OFF POST +0
-/ch/06/mix/02   0.0 OFF POST
+/ch/06/mix/02   -oo OFF POST
 /ch/06/mix/03   -oo OFF POSTEQ +0
 /ch/06/mix/04   -oo OFF POSTEQ
-/ch/06/mix/05   -oo OFF POST +0
-/ch/06/mix/06   -oo OFF POST
+/ch/06/mix/05   0.0 OFF POST +0
+/ch/06/mix/06   0.0 OFF POST
 /ch/06/mix/07   -oo OFF POST
 /ch/06/mix/08   -oo OFF POST
 /ch/06/mix/09   -oo OFF POST
@@ -167,7 +167,7 @@
 /ch/07/eq/2 PEQ 496.6 +0.00 2.0
 /ch/07/eq/3 PEQ 1k97 +0.00 2.0
 /ch/07/eq/4 HShv 10k02 +0.00 2.0
-/ch/07/mix ON   0.0 ON +0
+/ch/07/mix OFF   -oo ON +0
 /ch/07/mix/01   -oo OFF POST +0
 /ch/07/mix/02   -oo OFF POST
 /ch/07/mix/03   -oo OFF POSTEQ +0
