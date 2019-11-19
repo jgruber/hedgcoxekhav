@@ -1,0 +1,12 @@
+[Unit]
+Description=Web Service to Set Audio and Video Scenes
+Requires=multi-user.target
+After=multi-user.target
+
+[Service]
+Type=simple
+WorkingDirectory=/var/lib/hedgcoxekhav
+ExecStart=/var/lib/hedgcoxekhav/avswitcher.py
+
+[Install]
+WantedBy=multi-user.target
