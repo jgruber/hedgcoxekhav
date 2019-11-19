@@ -32,9 +32,9 @@ CONFIG = {
 DEFAULT_AUDIO_SCENE = ''
 AUDIO_MIXER_INIT_SCENE = ''
 
-DIFF='/usr/bin/diff'
-CUT='/usr/bin/cut'
-SED='/bin/sed'
+DIFF = '/usr/bin/diff'
+CUT = '/usr/bin/cut'
+SED = '/bin/sed'
 
 app = Flask('avswitcher')
 
@@ -45,7 +45,8 @@ def scene_service():
     print('setting A/V scene %s' % json.dumps(scene_data))
     if 'videochannels' in scene_data:
         for ch in scene_data['videochannels']:
-            set_av_state(CONFIG['AV_SWITCH_IP'], CONFIG['AV_SWITCH_PORT'], ch['input'], ch['output'])
+            set_av_state(
+                CONFIG['AV_SWITCH_IP'], CONFIG['AV_SWITCH_PORT'], ch['input'], ch['output'])
     if 'audioscene' in scene_data:
         scene_found = False
         for scenename in CONFIG['scenes'].keys():
@@ -57,7 +58,8 @@ def scene_service():
                     result = {'error': e.message}
                     return jsonify(result), 500
         if not scene_found:
-            result = {'error': "no audio scene %s found" % scene_data['audioscene']}
+            result = {
+                'error': "no audio scene %s found" % scene_data['audioscene']}
             return jsonify(result), 404
     return jsonify({})
 
@@ -91,8 +93,9 @@ def video_service():
         error = Exception('invalid port defined')
         error.status_code = 400
         raise error
-    if( input and output ):
-        set_av_state(host, port, request.args.get('input'), request.args.get('output'))
+    if(input and output):
+        set_av_state(host, port, request.args.get(
+            'input'), request.args.get('output'))
         time.sleep(1)
         return query_av_state(host, port)
     else:
@@ -101,14 +104,16 @@ def video_service():
 
 def query_av_state(host, port):
     avm = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
+    avm.settimeout(5)
     avm.connect((host, port))
-    query_state = 'a56c140082010100000000000000000053fc01ae'.decode('hex')
-    avm.send(query_state.encode())
+    query_state = bytes.fromhex('a56c140082010100000000000000000053fc01ae')
+    avm.send(query_state)
     current_state = avm.recv(100)
+    current_state = current_state[18:26].strip()
     outputs = {}
     for indx, ch in enumerate(current_state):
-        outputs[str(indx)] = ch
-    return jsonify({ 'outputs': outputs})
+        outputs[str(indx + 1)] = '%s' % ch
+    return jsonify({'outputs': outputs})
 
 
 def set_av_state(host, port, input, output):
@@ -138,14 +143,19 @@ def audio_service():
 
 
 def set_audio_scene(host, scene):
-    scenefile = "%s/static/audioscenes/%s" % (os.path.dirname(os.path.realpath(__file__)), CONFIG['scenes'][scene]['file'])
-    initfile = "%s/static/audioscenes/%s" % (os.path.dirname(os.path.realpath(__file__)), CONFIG['INIT_AUDIO_SCENE']['file'])
-    cmd = "%s -y --suppress-common %s %s | %s -d'|' -f1 | %s 's/[[:space:]]*$//' | %s -i %s" % (DIFF, scenefile, initfile, CUT, SED, CONFIG['XAIRSETSCENE'], host)
+    scenefile = "%s/static/audioscenes/%s" % (os.path.dirname(
+        os.path.realpath(__file__)), CONFIG['scenes'][scene]['file'])
+    initfile = "%s/static/audioscenes/%s" % (os.path.dirname(
+        os.path.realpath(__file__)), CONFIG['INIT_AUDIO_SCENE']['file'])
+    cmd = "%s -y --suppress-common %s %s | %s -d'|' -f1 | %s 's/[[:space:]]*$//' | %s -i %s" % (
+        DIFF, scenefile, initfile, CUT, SED, CONFIG['XAIRSETSCENE'], host)
     print('sending cmd: %s' % cmd)
     FNULL = open(os.devnull)
-    exitcode = subprocess.call(cmd, shell=True, stdout=FNULL, stderr=subprocess.STDOUT)
+    exitcode = subprocess.call(
+        cmd, shell=True, stdout=FNULL, stderr=subprocess.STDOUT)
     if exitcode != 0:
-        error = Exception("could not set scene %s - exit code %s" % (scene, exitcode))
+        error = Exception(
+            "could not set scene %s - exit code %s" % (scene, exitcode))
         error.status_code = 500
         raise error
     else:
@@ -154,7 +164,8 @@ def set_audio_scene(host, scene):
 
 def load_config():
     global CONFIG
-    config_file = "%s/config.json" % os.path.dirname(os.path.realpath(__file__))
+    config_file = "%s/config.json" % os.path.dirname(
+        os.path.realpath(__file__))
     if os.path.exists(config_file):
         print('loading config from %s' % config_file)
         with open(config_file) as json_data_file:
@@ -179,4 +190,5 @@ def catch_all(path):
 if __name__ == '__main__':
     signal.signal(signal.SIGHUP, load_config)
     load_config()
-    app.run(host='0.0.0.0', port=CONFIG['WEB_SERVICE_PORT'], debug=CONFIG['WEB_SERVICE_DEBUG'])
+    app.run(host='0.0.0.0',
+            port=CONFIG['WEB_SERVICE_PORT'], debug=CONFIG['WEB_SERVICE_DEBUG'])

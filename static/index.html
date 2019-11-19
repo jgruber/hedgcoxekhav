@@ -4,6 +4,13 @@
 <title>Hedgcoxe A/V Scene Switcher</title>
 <link rel="shortcut icon" href="favicon.png">
 <style>
+.banner {
+    background-color: red;
+    color: white;
+    margin: 5px;
+    padding-left: 5px;
+    display: none;
+}
 .controlpanel {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -31,6 +38,8 @@
 </head>
 <body onload="initControlPanel();">
 <header>
+<div id='banner' class='banner'>
+</div>
 </header>
 <nav>
 </nav>
@@ -43,13 +52,13 @@
 var config = {};
 
 function initControlPanel() {
-    var httpGet = new XMLHttpRequest();
-    httpGet.open("GET", '/config?qid=' + new Date().getTime());
-    httpGet.setRequestHeader('Content-Type', 'application/json');
-    httpGet.onreadystatechange = function() {
-        if(httpGet.readyState == 4) {
+    var configGet = new XMLHttpRequest();
+    configGet.open("GET", '/config?qid=' + new Date().getTime());
+    configGet.setRequestHeader('Content-Type', 'application/json');
+    configGet.onreadystatechange = function() {
+        if(configGet.readyState == 4) {
             var controlPanel = document.getElementById('controlpanel');
-            config = JSON.parse(httpGet.responseText);
+            config = JSON.parse(configGet.responseText);
             var scenesHTML = '';
             var scenenames = Object.keys(config['scenes']);
             scenenames.forEach( (scenename, index) => {
@@ -67,16 +76,33 @@ function initControlPanel() {
             controlPanel.innerHTML = scenesHTML;
         }
     };
-    httpGet.send();
+    configGet.send();
+    var videoGet = new XMLHttpRequest();
+    var banner = document.getElementById('banner');
+    videoGet.open("GET", '/video?qid=' + new Date().getTime());
+    videoGet.setRequestHeader('Content-Type', 'application/json');
+    videoGet.onreadystatechange = function() {
+        if(videoGet.readyState == 4) {
+            if(videoGet.status > 399) {
+                banner.innerHTML = '<h2>Video switch is unavailable over the network</h2>';
+                banner.style.display = 'block';
+            } else {
+                banner.innerHTML = '';
+                banner.style.display = 'none';
+            }
+        }
+    };
+    banner.style.display = 'none';
+    videoGet.send();
 }
 
 function loadScene(scenename) {
     var jsonSubmit = JSON.stringify(config['scenes'][scenename]);
     console.log('submitting: ' + jsonSubmit);
-    var httpPost = new XMLHttpRequest();
-    httpPost.open("POST", '/scene', true);
-    httpPost.setRequestHeader('Content-Type', 'application/json');
-    httpPost.send(jsonSubmit);
+    var sceneSet = new XMLHttpRequest();
+    sceneSet.open("POST", '/scene', true);
+    sceneSet.setRequestHeader('Content-Type', 'application/json');
+    sceneSet.send(jsonSubmit);
 }
 </script>
 </body>
