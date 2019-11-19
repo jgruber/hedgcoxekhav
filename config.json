@@ -124,7 +124,7 @@
                     "output": "4,5"
                 }
             ],
-            "audioscene":  "Default"
+            "audioscene":  "2MeetingClassroom2MicAndLibrary0Mic"
         },
         "0073MeetingClassroom1MicAndLibrary1Mic" : {
             "file": "3MeetingClassroom1MicAndLibrary1Mic.scn",
