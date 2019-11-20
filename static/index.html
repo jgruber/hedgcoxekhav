@@ -49,6 +49,10 @@
             justify-content: center;
         }
 
+        .videochannelstatusbar:active {
+            transform: translateY(5px);
+        }
+
         .videochannelstatebutton {
             display: inline-block;
             background-color: gray;
@@ -101,7 +105,7 @@
     <header>
     </header>
     <nav>
-        <div id='statusbar' class='statusbar'>
+        <div id='statusbar' class='statusbar' onclick='getVideoStatus()'>
             <div class='videochannelstatusbar' id='videochannels'>
                 <div class='videochannelstatebutton' id='videchannelstate1'>
                     ?
