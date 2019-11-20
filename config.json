@@ -13,6 +13,7 @@
         "description": "Scene used to initialize mixer settings"
     },
     "XAIRSETSCENE": "/usr/bin/XAirSetScene",
+    "XAIRCMD": "/usr/bin/XAir_Command",
     "scenes": {
         "001Default" : {
             "file": "Default.scn",

@@ -24,7 +24,8 @@ CONFIG = {
         'file': 'Initialized.scn',
         'description': 'Scene used to initialize mixer settings'
     },
-    'XAIRSETSCENE': '/root/XAirSetScene',
+    'XAIRSETSCENE': '/usr/bin/XAirSetScene',
+    'XAIRCMD': '/usr/bin/XAir_Command',
     'scenes': {}
 }
 
@@ -134,12 +135,15 @@ def audio_service():
             host = body.get('host')
         if ('scene' in body):
             scene = body.get('scene')
+        return set_audio_scene(host, scene)
     else:
         if('host' in request.args):
             host = request.args.get('host')
-        if 'scene' in request.args:
+        if('scene' in request.args):
             scene = request.args.get('scene')
-    return set_audio_scene(host, scene)
+            return set_audio_scene(host, scene)
+        else:
+            return get_audio_status(host)
 
 
 def set_audio_scene(host, scene):
@@ -160,6 +164,18 @@ def set_audio_scene(host, scene):
         raise error
     else:
         return jsonify({'scene': scene})
+
+
+def get_audio_status(host):
+    bs = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
+    bs.settimeout(5)
+    bs.connect((host, 10024))
+    bs.send(b"/status\n")
+    current_state = bs.recv(100)
+    current_state = current_state.decode()[16:].replace('\x00',' ').strip().split()
+    outputs = {}
+    outputs[current_state[1]] = {'status': current_state[0], 'name': current_state[2]}
+    return jsonify({'outputs': outputs})
 
 
 def load_config():
@@ -191,4 +207,6 @@ if __name__ == '__main__':
     signal.signal(signal.SIGHUP, load_config)
     load_config()
     app.run(host='0.0.0.0',
-            port=CONFIG['WEB_SERVICE_PORT'], debug=CONFIG['WEB_SERVICE_DEBUG'])
+            port=CONFIG['WEB_SERVICE_PORT'],
+            debug=CONFIG['WEB_SERVICE_DEBUG'],
+            threaded=True)

@@ -1,109 +1,302 @@
 <!doctype html>
 <html>
+
 <head>
-<title>Hedgcoxe A/V Scene Switcher</title>
-<link rel="shortcut icon" href="favicon.png">
-<style>
-.banner {
-    background-color: red;
-    color: white;
-    margin: 5px;
-    padding-left: 5px;
-    display: none;
-}
-.controlpanel {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    grid-gap: 5px;
-}
-.controlpanelbutton__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border: 1px solid black;
-    box-shadow: 9px 9px #999;
-}
-.controlpanelbutton__img:hover {
-    border: 1px solid black;
-    box-shadow: 9px 9px #9f9;
-}
-.controlpanelbutton__img:active {
-    background-color: #eee;
-    border: 1px solid black;
-    box-shadow: 5px 5px #555;
-    transform: translateY(5px);
-}
-</style>
-</head>
-<body onload="initControlPanel();">
-<header>
-<div id='banner' class='banner'>
-</div>
-</header>
-<nav>
-</nav>
-<div class='controlpanel' id='controlpanel'>
-</div>
-<footer>
-</footer>
-<script type='text/javascript'>
-
-var config = {};
-
-function initControlPanel() {
-    var configGet = new XMLHttpRequest();
-    configGet.open("GET", '/config?qid=' + new Date().getTime());
-    configGet.setRequestHeader('Content-Type', 'application/json');
-    configGet.onreadystatechange = function() {
-        if(configGet.readyState == 4) {
-            var controlPanel = document.getElementById('controlpanel');
-            config = JSON.parse(configGet.responseText);
-            var scenesHTML = '';
-            var scenenames = Object.keys(config['scenes']);
-            scenenames.forEach( (scenename, index) => {
-                var scene = config['scenes'][scenename];
-                scenesHTML = scenesHTML +
-                    "<figure class='controlpanelbutton'><img src='/img/" + 
-                    scene['imgagefile'] + 
-                    "' class='controlpanelbutton__img' alt='" + 
-                    scene['description'] +
-                    "' title='" +
-                    scene['description'] +
-                    "' onclick='loadScene(\"" +
-                    scenename + "\");'></figure>";
-            });
-            controlPanel.innerHTML = scenesHTML;
+    <title>Hedgcoxe A/V Scene Switcher</title>
+    <link rel="shortcut icon" href="favicon.png">
+    <style>
+        .statusbar {
+            display: block;
+            height: 40px;
+            width: 100%;
+            cursor: pointer;
         }
-    };
-    configGet.send();
-    var videoGet = new XMLHttpRequest();
-    var banner = document.getElementById('banner');
-    videoGet.open("GET", '/video?qid=' + new Date().getTime());
-    videoGet.setRequestHeader('Content-Type', 'application/json');
-    videoGet.onreadystatechange = function() {
-        if(videoGet.readyState == 4) {
-            if(videoGet.status > 399) {
-                banner.innerHTML = '<h2>Video switch is unavailable over the network</h2>';
-                banner.style.display = 'block';
-            } else {
-                banner.innerHTML = '';
-                banner.style.display = 'none';
+
+        .statusbadge {
+            float: right;
+            border-radius: 100%;
+            margin: 10px;
+            padding: 5px;
+            display: flex;
+            height: 40px;
+            width: 40px;
+            color: black;
+            background-color: gray;
+            font-weight: bold;
+            justify-content: center;
+        }
+
+        .statusbadge:active {
+            transform: translateY(5px);
+        }
+
+        .statusmessage {
+            float: left;
+            font-family: Arial, Helvetica, sans-serif;
+            color: gray;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-left: 20px;
+        }
+
+        .videochannelstatusbar {
+            float: left;
+            margin-top: 20px;
+            margin-right: 20px;
+            margin-left: 20px;
+            background-color: white;
+            height: 40px;
+            justify-content: center;
+        }
+
+        .videochannelstatebutton {
+            display: inline-block;
+            background-color: gray;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            font-size: larger;
+            text-align: center;
+            padding-top: 10px;
+            width: 40px;
+            height: 30px;
+        }
+
+        .centered {
+            margin: auto;
+            width: 50%;
+            text-align: center;
+        }
+
+        .controlpanel {
+            display: grid;
+            width: 100%;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            grid-gap: 5px;
+        }
+
+        .controlpanelbutton__img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: 1px solid black;
+            box-shadow: 9px 9px #999;
+        }
+
+        .controlpanelbutton__img:hover {
+            border: 1px solid black;
+            box-shadow: 9px 9px #9f9;
+        }
+
+        .controlpanelbutton__img:active {
+            background-color: #eee;
+            border: 1px solid black;
+            box-shadow: 5px 5px #555;
+            transform: translateY(5px);
+        }
+    </style>
+</head>
+
+<body onload="initControlPanel();">
+    <header>
+    </header>
+    <nav>
+        <div id='statusbar' class='statusbar'>
+            <div class='videochannelstatusbar' id='videochannels'>
+                <div class='videochannelstatebutton' id='videchannelstate1'>
+                    ?
+                </div>
+                <div class='videochannelstatebutton' id='videchannelstate2'>
+                    ?
+                </div>
+                <div class='videochannelstatebutton' id='videchannelstate3'>
+                    ?
+                </div>
+                <div class='videochannelstatebutton' id='videchannelstate4'>
+                    ?
+                </div>
+                <div class='videochannelstatebutton' id='videchannelstate5'>
+                    ?
+                </div>
+                <div class='videochannelstatebutton' id='videchannelstate6'>
+                    ?
+                </div>
+                <div class='videochannelstatebutton' id='videchannelstate7'>
+                    ?
+                </div>
+                <div class='videochannelstatebutton' id='videchannelstate8'>
+                    ?
+                </div>
+            </div>
+            <div class='statusmessage' id='statusmessage'>
+                establishing communications
+            </div>
+            <div class='statusbadge' id='audiostatus' title='Audio service status' onclick='getAudioStatus()'>
+                <span class='centered'>A</span>
+            </div>
+        </div>
+    </nav>
+    <div class='controlpanel' id='controlpanel'>
+    </div>
+    <footer>
+    </footer>
+    <script type='text/javascript'>
+
+        var config = {};
+        var audioError = false;
+        var videoError = false;
+
+        function initControlPanel() {
+            var configGet = new XMLHttpRequest();
+            configGet.open("GET", '/config?qid=' + new Date().getTime());
+            configGet.setRequestHeader('Content-Type', 'application/json');
+            configGet.onreadystatechange = function () {
+                if (configGet.readyState == 4) {
+                    var controlPanel = document.getElementById('controlpanel');
+                    config = JSON.parse(configGet.responseText);
+                    var scenesHTML = '';
+                    var scenenames = Object.keys(config['scenes']);
+                    scenenames.forEach((scenename, index) => {
+                        var scene = config['scenes'][scenename];
+                        scenesHTML = scenesHTML +
+                            "<figure class='controlpanelbutton'><img src='/img/" +
+                            scene['imgagefile'] +
+                            "' class='controlpanelbutton__img' alt='" +
+                            scene['description'] +
+                            "' title='" +
+                            scene['description'] +
+                            "' onclick='loadScene(\"" +
+                            scenename + "\");'></figure>";
+                    });
+                    controlPanel.innerHTML = scenesHTML;
+                }
+            };
+            configGet.send();
+            getStatusUpdate();
+            setInterval(() => { getStatusUpdate(); }, 10000);
+        }
+
+        function getStatusUpdate() {
+            var statusmessage = document.getElementById('statusmessage');
+            statusmessage.innerHTML = 'getting video and audio status...';
+            getVideoStatus();
+            getAudioStatus();
+            if (!(audioError || videoError)) {
+                statusmessage.innerHTML = 'all services available';
+                statusmessage.style.color = 'gray';
             }
         }
-    };
-    banner.style.display = 'none';
-    videoGet.send();
-}
 
-function loadScene(scenename) {
-    var jsonSubmit = JSON.stringify(config['scenes'][scenename]);
-    console.log('submitting: ' + jsonSubmit);
-    var sceneSet = new XMLHttpRequest();
-    sceneSet.open("POST", '/scene', true);
-    sceneSet.setRequestHeader('Content-Type', 'application/json');
-    sceneSet.send(jsonSubmit);
-}
-</script>
+        function getVideoStatus() {
+            var videoGet = new XMLHttpRequest();
+            videoGet.open("GET", '/video?qid=' + new Date().getTime());
+            videoGet.setRequestHeader('Content-Type', 'application/json');
+            videoGet.onreadystatechange = function () {
+                if (videoGet.readyState == 4) {
+                    var statusmessage = document.getElementById('statusmessage');
+                    var videostatus = document.getElementById('videostatus');
+                    console.log('vide status code ' + videoGet.status + ' with response:' + videoGet.responseText);
+                    if (videoGet.status > 399) {
+                        statusmessage.innerHTML = 'Video switch is unavailable over the network';
+                        statusmessage.style.color = 'red';
+                        videoError = true;
+                        var channelOutput = JSON.parse(videoGet.responseText)['outputs'];
+                        var videchannelstate1 = document.getElementById('videchannelstate1')
+                        videchannelstate1.style.backgroundColor = 'gray';
+                        videchannelstate1.innerHTML = '?';
+                        var videchannelstate2 = document.getElementById('videchannelstate2')
+                        videchannelstate2.style.backgroundColor = 'gray';
+                        videchannelstate2.innerHTML = '?';
+                        var videchannelstate3 = document.getElementById('videchannelstate3')
+                        videchannelstate3.style.backgroundColor = 'gray';
+                        videchannelstate3.innerHTML = '?';
+                        var videchannelstate4 = document.getElementById('videchannelstate4')
+                        videchannelstate4.style.backgroundColor = 'gray';
+                        videchannelstate4.innerHTML = '?';
+                        var videchannelstate5 = document.getElementById('videchannelstate5')
+                        videchannelstate5.style.backgroundColor = 'gray';
+                        videchannelstate5.innerHTML = '?';
+                        var videchannelstate6 = document.getElementById('videchannelstate6')
+                        videchannelstate6.style.backgroundColor = 'gray';
+                        videchannelstate6.innerHTML = '?';
+                        var videchannelstate7 = document.getElementById('videchannelstate7')
+                        videchannelstate7.style.backgroundColor = 'gray';
+                        videchannelstate7.innerHTML = '?';
+                        var videchannelstate8 = document.getElementById('videchannelstate8')
+                        videchannelstate8.style.backgroundColor = 'gray';
+                        videchannelstate8.innerHTML = '?';
+                    } else {
+                        videoError = false;
+                        var channelOutput = JSON.parse(videoGet.responseText)['outputs'];
+                        var videchannelstate1 = document.getElementById('videchannelstate1')
+                        videchannelstate1.style.backgroundColor = '#00ff00';
+                        videchannelstate1.innerHTML = channelOutput['1'];
+                        var videchannelstate2 = document.getElementById('videchannelstate2')
+                        videchannelstate2.style.backgroundColor = '#00ff00';
+                        videchannelstate2.innerHTML = channelOutput['2'];
+                        var videchannelstate3 = document.getElementById('videchannelstate3')
+                        videchannelstate3.style.backgroundColor = '#00ff00';
+                        videchannelstate3.innerHTML = channelOutput['3'];
+                        var videchannelstate4 = document.getElementById('videchannelstate4')
+                        videchannelstate4.style.backgroundColor = '#00ff00';
+                        videchannelstate4.innerHTML = channelOutput['4'];
+                        var videchannelstate5 = document.getElementById('videchannelstate5')
+                        videchannelstate5.style.backgroundColor = '#00ff00';
+                        videchannelstate5.innerHTML = channelOutput['5'];
+                        var videchannelstate6 = document.getElementById('videchannelstate6')
+                        videchannelstate6.style.backgroundColor = '#00ff00';
+                        videchannelstate6.innerHTML = channelOutput['6'];
+                        var videchannelstate7 = document.getElementById('videchannelstate7')
+                        videchannelstate7.style.backgroundColor = '#00ff00';
+                        videchannelstate7.innerHTML = channelOutput['7'];
+                        var videchannelstate8 = document.getElementById('videchannelstate8')
+                        videchannelstate8.style.backgroundColor = '#00ff00';
+                        videchannelstate8.innerHTML = channelOutput['8'];
+                    }
+                }
+            };
+            videoGet.send();
+        }
+
+        function getAudioStatus() {
+            var audioGet = new XMLHttpRequest();
+            audioGet.open("GET", '/audio?qid=' + new Date().getTime());
+            audioGet.setRequestHeader('Content-Type', 'application/json');
+            audioGet.onreadystatechange = function () {
+                if (audioGet.readyState == 4) {
+                    var statusmessage = document.getElementById('statusmessage');
+                    var audiostatus = document.getElementById('audiostatus');
+                    if (audioGet.status > 399) {
+                        statusmessage.innerHTML = 'Audio mixer is unavailable over the network';
+                        statusmessage.style.color = 'red';
+                        audiostatus.style.backgroundColor = 'red';
+                        audioError = true;
+                    } else {
+                        audioError = false;
+                        audiostatus.style.backgroundColor = '#00ff00';
+                        var audio_state = JSON.parse(audioGet.responseText);
+                        var mixers = Object.keys(audio_state['outputs']);
+                        var mixerstatestr = '';
+                        mixers.forEach((mixer) => {
+                            mixerstatestr = mixerstatestr + 'mixer: ' + audio_state['outputs'][mixer]['name'] + ' is ' + audio_state['outputs'][mixer]['status']
+                        });
+                        audiostatus.title = mixerstatestr;
+                    }
+                }
+            };
+            audioGet.send();
+        }
+
+        function loadScene(scenename) {
+            var jsonSubmit = JSON.stringify(config['scenes'][scenename]);
+            console.log('submitting: ' + jsonSubmit);
+            var sceneSet = new XMLHttpRequest();
+            sceneSet.open("POST", '/scene', true);
+            sceneSet.setRequestHeader('Content-Type', 'application/json');
+            sceneSet.send(jsonSubmit);
+            getVideoStatus();
+        }
+    </script>
 </body>
+
 </html>
