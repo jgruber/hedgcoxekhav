@@ -17,12 +17,12 @@
 /ch/01/eq/2 PEQ 654.7 -10.2 2.0
 /ch/01/eq/3 PEQ 3k55 +10.5 2.0
 /ch/01/eq/4 HShv 17k41 -11.0 2.0
-/ch/01/mix ON  +0.1 ON -100
-/ch/01/mix/01   -oo OFF POST -100
-/ch/01/mix/02   -oo OFF POST
+/ch/01/mix OFF   -oo ON -100
+/ch/01/mix/01 -30.0 OFF POST -100
+/ch/01/mix/02 -30.0 OFF POST
 /ch/01/mix/03   -oo OFF POSTEQ -100
 /ch/01/mix/04   -oo OFF POSTEQ
-/ch/01/mix/05 -15.0 OFF POST -100
+/ch/01/mix/05   -oo OFF IN -100
 /ch/01/mix/06   -oo OFF IN
 /ch/01/mix/07   -oo OFF POST
 /ch/01/mix/08   -oo OFF POST
@@ -42,12 +42,12 @@
 /ch/02/eq/2 PEQ 654.7 -10.2 2.0
 /ch/02/eq/3 PEQ 3k55 +10.5 2.0
 /ch/02/eq/4 HShv 17k41 -11.0 2.0
-/ch/02/mix ON  +0.1 ON +100
-/ch/02/mix/01   -oo OFF POST +100
-/ch/02/mix/02   -oo OFF POST
+/ch/02/mix OFF   -oo ON +100
+/ch/02/mix/01 -30.0 OFF POST +100
+/ch/02/mix/02 -30.0 OFF POST
 /ch/02/mix/03   -oo OFF POSTEQ +100
 /ch/02/mix/04   -oo OFF POSTEQ
-/ch/02/mix/05 -15.0 OFF POST +100
+/ch/02/mix/05   -oo OFF IN +100
 /ch/02/mix/06   -oo OFF IN
 /ch/02/mix/07   -oo OFF POST
 /ch/02/mix/08   -oo OFF POST
@@ -67,12 +67,12 @@
 /ch/03/eq/2 PEQ 496.6 -4.50 2.0
 /ch/03/eq/3 PEQ 990.9 +0.50 2.0
 /ch/03/eq/4 HCut 2k99 -1.50 2.0
-/ch/03/mix ON   0.0 OFF +0
-/ch/03/mix/01   -oo OFF POST +0
+/ch/03/mix OFF   -oo OFF +0
+/ch/03/mix/01 -10.0 OFF POST +0
 /ch/03/mix/02   -oo OFF POST
 /ch/03/mix/03   -oo OFF POSTEQ +0
 /ch/03/mix/04   -oo OFF POSTEQ
-/ch/03/mix/05   0.0 OFF POST +0
+/ch/03/mix/05   -oo OFF IN +0
 /ch/03/mix/06   -oo OFF IN
 /ch/03/mix/07   -oo OFF POST
 /ch/03/mix/08   -oo OFF POST
@@ -92,12 +92,12 @@
 /ch/04/eq/2 PEQ 496.6 -5.00 2.0
 /ch/04/eq/3 PEQ 990.9 +0.00 2.0
 /ch/04/eq/4 HCut 2k99 -11.0 2.0
-/ch/04/mix ON   0.0 ON +0
-/ch/04/mix/01   -oo OFF POST +0
+/ch/04/mix OFF   -oo ON +0
+/ch/04/mix/01 -10.0 OFF POST +0
 /ch/04/mix/02   -oo OFF POST
 /ch/04/mix/03   -oo OFF POSTEQ +0
 /ch/04/mix/04   -oo OFF POSTEQ
-/ch/04/mix/05   0.0 OFF POST +0
+/ch/04/mix/05   -oo OFF IN +0
 /ch/04/mix/06   -oo OFF IN
 /ch/04/mix/07   -oo OFF POST
 /ch/04/mix/08   -oo OFF POST
@@ -117,12 +117,12 @@
 /ch/05/eq/2 PEQ 496.6 -4.50 2.0
 /ch/05/eq/3 PEQ 990.9 +0.50 2.0
 /ch/05/eq/4 HCut 2k99 -0.50 2.0
-/ch/05/mix ON   0.0 ON +0
+/ch/05/mix OFF   -oo ON +0
 /ch/05/mix/01   -oo OFF POST +0
-/ch/05/mix/02   -oo OFF POST
+/ch/05/mix/02 -10.0 OFF POST
 /ch/05/mix/03   -oo OFF POSTEQ +0
 /ch/05/mix/04   -oo OFF POSTEQ
-/ch/05/mix/05   0.0 OFF POST +0
+/ch/05/mix/05   -oo OFF IN +0
 /ch/05/mix/06   -oo OFF IN
 /ch/05/mix/07   -oo OFF POST
 /ch/05/mix/08   -oo OFF POST
@@ -142,12 +142,12 @@
 /ch/06/eq/2 PEQ 496.6 -5.00 2.0
 /ch/06/eq/3 PEQ 990.9 +0.00 2.0
 /ch/06/eq/4 HCut 2k99 -15.0 2.0
-/ch/06/mix ON   0.0 ON +0
+/ch/06/mix OFF   -oo ON +0
 /ch/06/mix/01   -oo OFF POST +0
-/ch/06/mix/02   0.0 OFF POST
+/ch/06/mix/02 -10.0 OFF POST
 /ch/06/mix/03   -oo OFF POSTEQ +0
 /ch/06/mix/04   -oo OFF POSTEQ
-/ch/06/mix/05   -oo OFF POST +0
+/ch/06/mix/05   -oo OFF IN +0
 /ch/06/mix/06   -oo OFF IN
 /ch/06/mix/07   -oo OFF POST
 /ch/06/mix/08   -oo OFF POST
@@ -167,12 +167,12 @@
 /ch/07/eq/2 PEQ 496.6 +0.00 2.0
 /ch/07/eq/3 PEQ 1k97 +0.00 2.0
 /ch/07/eq/4 HShv 10k02 +0.00 2.0
-/ch/07/mix ON   0.0 ON +0
+/ch/07/mix ON   -oo ON +0
 /ch/07/mix/01   -oo OFF POST +0
 /ch/07/mix/02   -oo OFF POST
 /ch/07/mix/03   -oo OFF POSTEQ +0
 /ch/07/mix/04   -oo OFF POSTEQ
-/ch/07/mix/05  +6.0 OFF POST +0
+/ch/07/mix/05  +6.0 OFF IN +0
 /ch/07/mix/06  +6.0 OFF IN
 /ch/07/mix/07   -oo OFF POST
 /ch/07/mix/08   -oo OFF POST
@@ -197,7 +197,7 @@
 /ch/08/mix/02   -oo OFF POST
 /ch/08/mix/03   -oo OFF POSTEQ +0
 /ch/08/mix/04   -oo OFF POSTEQ
-/ch/08/mix/05   -oo OFF POST +0
+/ch/08/mix/05   -oo OFF IN +0
 /ch/08/mix/06   -oo OFF IN
 /ch/08/mix/07   -oo OFF POST
 /ch/08/mix/08   -oo OFF POST
@@ -222,7 +222,7 @@
 /ch/09/mix/02   -oo OFF POST
 /ch/09/mix/03   -oo OFF POSTEQ +0
 /ch/09/mix/04   -oo OFF POSTEQ
-/ch/09/mix/05   -oo OFF POST +0
+/ch/09/mix/05   -oo OFF IN +0
 /ch/09/mix/06   -oo OFF IN
 /ch/09/mix/07   -oo OFF POST
 /ch/09/mix/08   -oo OFF POST
@@ -247,7 +247,7 @@
 /ch/10/mix/02   -oo OFF POST
 /ch/10/mix/03   -oo OFF POSTEQ +0
 /ch/10/mix/04   -oo OFF POSTEQ
-/ch/10/mix/05   -oo OFF POST +0
+/ch/10/mix/05   -oo OFF IN +0
 /ch/10/mix/06   -oo OFF IN
 /ch/10/mix/07   -oo OFF POST
 /ch/10/mix/08   -oo OFF POST
@@ -272,7 +272,7 @@
 /ch/11/mix/02   -oo OFF POST
 /ch/11/mix/03   -oo OFF POSTEQ +0
 /ch/11/mix/04   -oo OFF POSTEQ
-/ch/11/mix/05   -oo OFF POST +0
+/ch/11/mix/05   -oo OFF IN +0
 /ch/11/mix/06   -oo OFF IN
 /ch/11/mix/07   -oo OFF POST
 /ch/11/mix/08   -oo OFF POST
@@ -297,7 +297,7 @@
 /ch/12/mix/02   -oo OFF POST
 /ch/12/mix/03   -oo OFF POSTEQ +0
 /ch/12/mix/04   -oo OFF POSTEQ
-/ch/12/mix/05   -oo OFF POST +0
+/ch/12/mix/05   -oo OFF IN +0
 /ch/12/mix/06   -oo OFF IN
 /ch/12/mix/07   -oo OFF POST
 /ch/12/mix/08   -oo OFF POST
@@ -322,7 +322,7 @@
 /ch/13/mix/02   -oo OFF POST
 /ch/13/mix/03   -oo OFF POSTEQ +0
 /ch/13/mix/04   -oo OFF POSTEQ
-/ch/13/mix/05   -oo OFF POST +0
+/ch/13/mix/05   -oo OFF IN +0
 /ch/13/mix/06   -oo OFF IN
 /ch/13/mix/07   -oo OFF POST
 /ch/13/mix/08   -oo OFF POST
@@ -347,7 +347,7 @@
 /ch/14/mix/02   -oo OFF POST
 /ch/14/mix/03   -oo OFF POSTEQ +0
 /ch/14/mix/04   -oo OFF POSTEQ
-/ch/14/mix/05   -oo OFF POST +0
+/ch/14/mix/05   -oo OFF IN +0
 /ch/14/mix/06   -oo OFF IN
 /ch/14/mix/07   -oo OFF POST
 /ch/14/mix/08   -oo OFF POST
@@ -372,7 +372,7 @@
 /ch/15/mix/02   -oo OFF POST
 /ch/15/mix/03   -oo OFF POSTEQ +0
 /ch/15/mix/04   -oo OFF POSTEQ
-/ch/15/mix/05   -oo OFF POST +0
+/ch/15/mix/05   -oo OFF IN +0
 /ch/15/mix/06   -oo OFF IN
 /ch/15/mix/07   -oo OFF POST
 /ch/15/mix/08   -oo OFF POST
@@ -397,7 +397,7 @@
 /ch/16/mix/02   -oo OFF POST
 /ch/16/mix/03   -oo OFF POSTEQ +0
 /ch/16/mix/04   -oo OFF POSTEQ
-/ch/16/mix/05   -oo OFF POST +0
+/ch/16/mix/05   -oo OFF IN +0
 /ch/16/mix/06   -oo OFF IN
 /ch/16/mix/07   -oo OFF POST
 /ch/16/mix/08   -oo OFF POST
@@ -417,7 +417,7 @@
 /rtn/aux/mix/02   -oo OFF POST
 /rtn/aux/mix/03   -oo OFF POSTEQ +0
 /rtn/aux/mix/04   -oo OFF POSTEQ
-/rtn/aux/mix/05   -oo OFF POST +0
+/rtn/aux/mix/05   -oo OFF IN +0
 /rtn/aux/mix/06   -oo OFF IN
 /rtn/aux/mix/07   -oo OFF POST
 /rtn/aux/mix/08   -oo OFF POST
@@ -669,9 +669,9 @@
 /routing/usb/18 AuxR AIN
 /headamp/01 -12.0 OFF
 /headamp/02 -12.0 OFF
-/headamp/03 -12.0 OFF
+/headamp/03 +0.0 OFF
 /headamp/04 +42.0 OFF
-/headamp/05 -12.0 OFF
+/headamp/05 +0.0 OFF
 /headamp/06 +42.0 OFF
 /headamp/07 +0.0 OFF
 /headamp/08 +0.0 OFF
