@@ -68,7 +68,27 @@
             ],
             "audioscene":  "1MeetingClassroom2Mic"
         },
-        "0042MeetingClassroom1Mic" : {
+        "0042MeetingClassroomVideoOnly" : {
+            "file": "2MeetingClassroomVideoOnly.scn",
+            "imgagefile": "2MeetingClassroomVideoOnly.png",
+            "description": "2 Meetings - Aux Classroom is video only",
+            "videochannels": [
+                {
+                    "input": "1",
+                    "output": "1,2"
+                },
+                {
+                    "input": "2",
+                    "output": "3,5,6,7,8"
+                },
+                {
+                    "input": "3",
+                    "output": "4"
+                }
+            ],
+            "audioscene":  "2MeetingClassroomVideoOnly"
+        },
+        "0052MeetingClassroom1Mic" : {
             "file": "2MeetingClassroom1Mic.scn",
             "imgagefile": "2MeetingClassroom1Mic.png",
             "description": "2 Meetings - Aux Classom has only Blue Wireless Microphone",
@@ -88,7 +108,7 @@
             ],
             "audioscene":  "2MeetingClassroom1Mic"
         },
-        "0052MeetingClassroom1MicAndLibrary1Mic" : {
+        "0062MeetingClassroom1MicAndLibrary1Mic" : {
             "file": "2MeetingClassroom1MicAndLibrary1Mic.scn",
             "imgagefile": "2MeetingClassroom1MicAndLibrary1Mic.png",
             "description": "2 Meetings with Aux Classroom and Library tied together, each with a Wireless Microphone",
@@ -108,7 +128,7 @@
             ],
             "audioscene":  "2MeetingClassroom1MicAndLibrary1Mic"
         },
-        "0062MeetingClassroom2MicAndLibrary0Mic" : {
+        "0072MeetingClassroom2MicAndLibrary0Mic" : {
             "file": "2MeetingClassroom2MicAndLibrary0Mic.scn",
             "imgagefile": "2MeetingClassroom2MicAndLibrary0Mic.png",
             "description": "2 Meetings with Aux Classroom and Library tied together, Aux Classroom with both Wireless Microphones",
@@ -128,7 +148,27 @@
             ],
             "audioscene":  "2MeetingClassroom2MicAndLibrary0Mic"
         },
-        "0073MeetingClassroom1MicAndLibrary1Mic" : {
+        "0082MeetingClassroomVideoOnlyLibraryVideoOnly" : {
+            "file": "2MeetingClassroomVideoOnlyLibraryVideoOnly.scn",
+            "imgagefile": "2MeetingClassroomVideoOnlyLibraryVideoOnly.png",
+            "description": "2 Meetings - Aux Classroom and Library are video only",
+            "videochannels": [
+                {
+                    "input": "1",
+                    "output": "1,2"
+                },
+                {
+                    "input": "2",
+                    "output": "3,6,7,8"
+                },
+                {
+                    "input": "3",
+                    "output": "4,5"
+                }
+            ],
+            "audioscene":  "2MeetingClassroomVideoOnlyLibraryVideoOnly"
+        },
+        "0093MeetingClassroom1MicAndLibrary1Mic" : {
             "file": "3MeetingClassroom1MicAndLibrary1Mic.scn",
             "imgagefile": "3MeetingClassroom1MicAndLibrary1Mic.png",
             "description": "3 Meetings, Each back room with 1 Wireless Microphone",
@@ -152,7 +192,7 @@
             ],
             "audioscene":  "3MeetingClassroom1MicAndLibrary1Mic"
         },
-        "0083MeetingClassroom2MicAndLibrary0Mic" : {
+        "0103MeetingClassroom2MicAndLibrary0Mic" : {
             "file": "3MeetingClassroom2MicAndLibrary0Mic.scn",
             "imgagefile": "3MeetingClassroom2MicAndLibrary0Mic.png",
             "description": "3 Meetings, Aux Classroom has 2 Wireless Microphones",
@@ -176,7 +216,7 @@
             ],
             "audioscene":  "3MeetingClassroom2MicAndLibrary0Mic"
         },
-        "0093MeetingClassroom0MicAndLibrary0Mic" : {
+        "0113MeetingClassroom0MicAndLibrary0Mic" : {
             "file": "3MeetingClassroom0MicAndLibrary0Mic.scn",
             "imgagefile": "3MeetingClassroom0MicAndLibrary0Mic.png",
             "description": "3 Meetings, All Wireless Microphones in the Main Auditorium",
@@ -199,6 +239,18 @@
                 }
             ],
             "audioscene":  "3MeetingClassroom0MicAndLibrary0Mic"
+        },
+        "0121MeetingNoCameras" : {
+            "file": "1MeetingNoCameras.scn",
+            "imgagefile": "1MeetingNoCameras.png",
+            "description": "1 Meeting displaying Windows 2 Monitor or Roku on all Monitors",
+            "videochannels": [
+                {
+                    "input": "1",
+                    "output": "1,2,3,4,5,6,7,8"
+                }
+            ],
+            "audioscene":  "Default"
         }
     }
 }
