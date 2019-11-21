@@ -14,6 +14,7 @@
     },
     "XAIRSETSCENE": "/usr/bin/XAirSetScene",
     "XAIRCMD": "/usr/bin/XAir_Command",
+    "LIVELYNESS_CHECK_SECS": 2,
     "scenes": {
         "001Default" : {
             "file": "Default.scn",

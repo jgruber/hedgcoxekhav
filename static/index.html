@@ -98,6 +98,10 @@
             box-shadow: 5px 5px #555;
             transform: translateY(5px);
         }
+
+        .activescene {
+            box-shadow: 9px 9px #f99;
+        }
     </style>
 </head>
 
@@ -147,8 +151,7 @@
     <script type='text/javascript'>
 
         var config = {};
-        var audioError = false;
-        var videoError = false;
+        var serviceError = false;
 
         function initControlPanel() {
             var configGet = new XMLHttpRequest();
@@ -165,7 +168,7 @@
                         scenesHTML = scenesHTML +
                             "<figure class='controlpanelbutton'><img src='/img/" +
                             scene['imgagefile'] +
-                            "' class='controlpanelbutton__img' alt='" +
+                            "' id='" + scenename + "' class='controlpanelbutton__img' alt='" +
                             scene['description'] +
                             "' title='" +
                             scene['description'] +
@@ -173,23 +176,80 @@
                             scenename + "\");'></figure>";
                     });
                     controlPanel.innerHTML = scenesHTML;
+                    setInterval(() => { getStatusUpdate(); }, config['LIVELYNESS_CHECK_SECS'] * 1000);
                 }
             };
             configGet.send();
-            getStatusUpdate();
-            setInterval(() => { getStatusUpdate(); }, 10000);
+            getAudioStatus();
+            getVideoStatus();
         }
 
         function getStatusUpdate() {
             var statusmessage = document.getElementById('statusmessage');
-            statusmessage.innerHTML = 'getting video and audio status...';
-            getVideoStatus();
-            getAudioStatus();
-            if (!(audioError || videoError)) {
-                statusmessage.innerHTML = 'all services available';
-                statusmessage.style.color = 'gray';
+            var statusGet = new XMLHttpRequest();
+            statusGet.open('GET', '/status?qid=' + new Date().getTime());
+            statusGet.setRequestHeader('Content-Type', 'application/json');
+            statusGet.onreadystatechange = function () {
+                if (statusGet.readyState == 4) {
+                    var statusmessage = document.getElementById('statusmessage');
+                    var videostatus = document.getElementById('videostatus');
+                    var audiostatus = document.getElementById('audiostatus');
+                    console.log('status:' + statusGet.status + ' - ' + statusGet.responseText);
+                    if (statusGet.status == 0 || statusGet.status > 399) {
+                        serviceError = true;
+                        statusmessage.style.color = 'red';
+                        statusmessage.innerHTML = 'service is unavailable at:' + generateVisualTimeStamp();
+                        audiostatus.style.backgroundColor = 'gray';
+                        channelOutput = channelOutput = { '1': '?', '2': '?', '3': '?', '4': '?', '5': '?', '6': '?', '7': '?', '8': '?' }
+                        setVideoChannelStates(channelOutput, serviceError);
+                    } else {
+                        if (serviceError) {
+                            getAudioStatus();
+                        }
+                        serviceError = false;
+                        statusmessage.style.color = 'gray';
+                        statusmessage.innerHTML = '';
+                        var status = JSON.parse(statusGet.responseText);
+                        setVideoChannelStates(status['last_video_state']['outputs'], serviceError);
+                        if (status['last_scene'] !== null) {
+                            highlightActiveScene(status['last_scene']);
+                        }
+                    }
+                }
+            };
+            statusGet.send();
+        }
+
+
+        function generateVisualTimeStamp() {
+            var now = new Date();
+            var datepart = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate();
+            var hr = now.getHours();
+            var min = now.getMinutes();
+            var sec = now.getSeconds();
+            if (min < 10) {
+                min = '0' + min;
+            }
+            if (sec < 10) {
+                sec = '0' + sec;
+            }
+            return datepart + ' ' + hr + ':' + min + ':' + sec;
+        }
+
+
+        function highlightActiveScene(scenename) {
+            var sceneElement = document.getElementById(scenename)
+            if (sceneElement) {
+                Object.keys(config['scenes']).forEach((scene) => {
+                    if (scenename === scene) {
+                        sceneElement.classList.add('activescene');
+                    } else {
+                        document.getElementById(scene).classList.remove('activescene');
+                    }
+                })
             }
         }
+
 
         function getVideoStatus() {
             var videoGet = new XMLHttpRequest();
@@ -200,66 +260,51 @@
                     var statusmessage = document.getElementById('statusmessage');
                     var videostatus = document.getElementById('videostatus');
                     console.log('vide status code ' + videoGet.status + ' with response:' + videoGet.responseText);
-                    if (videoGet.status > 399) {
-                        statusmessage.innerHTML = 'Video switch is unavailable over the network';
-                        statusmessage.style.color = 'red';
-                        videoError = true;
-                        var channelOutput = JSON.parse(videoGet.responseText)['outputs'];
-                        var videchannelstate1 = document.getElementById('videchannelstate1')
-                        videchannelstate1.style.backgroundColor = 'gray';
-                        videchannelstate1.innerHTML = '?';
-                        var videchannelstate2 = document.getElementById('videchannelstate2')
-                        videchannelstate2.style.backgroundColor = 'gray';
-                        videchannelstate2.innerHTML = '?';
-                        var videchannelstate3 = document.getElementById('videchannelstate3')
-                        videchannelstate3.style.backgroundColor = 'gray';
-                        videchannelstate3.innerHTML = '?';
-                        var videchannelstate4 = document.getElementById('videchannelstate4')
-                        videchannelstate4.style.backgroundColor = 'gray';
-                        videchannelstate4.innerHTML = '?';
-                        var videchannelstate5 = document.getElementById('videchannelstate5')
-                        videchannelstate5.style.backgroundColor = 'gray';
-                        videchannelstate5.innerHTML = '?';
-                        var videchannelstate6 = document.getElementById('videchannelstate6')
-                        videchannelstate6.style.backgroundColor = 'gray';
-                        videchannelstate6.innerHTML = '?';
-                        var videchannelstate7 = document.getElementById('videchannelstate7')
-                        videchannelstate7.style.backgroundColor = 'gray';
-                        videchannelstate7.innerHTML = '?';
-                        var videchannelstate8 = document.getElementById('videchannelstate8')
-                        videchannelstate8.style.backgroundColor = 'gray';
-                        videchannelstate8.innerHTML = '?';
+                    if (videoGet.status == 0 || videoGet.status > 399) {
+                        statusmessage.innerHTML = 'video switch is unavailable over the network';
+                        statusmessage.style.color = 'gray';
+                        serviceError = true;
+                        channelOutput = { '1': '?', '2': '?', '3': '?', '4': '?', '5': '?', '6': '?', '7': '?', '8': '?' }
+                        setVideoChannelStates(channelOutput, serviceError)
                     } else {
-                        videoError = false;
+                        serviceError = false;
                         var channelOutput = JSON.parse(videoGet.responseText)['outputs'];
-                        var videchannelstate1 = document.getElementById('videchannelstate1')
-                        videchannelstate1.style.backgroundColor = '#00ff00';
-                        videchannelstate1.innerHTML = channelOutput['1'];
-                        var videchannelstate2 = document.getElementById('videchannelstate2')
-                        videchannelstate2.style.backgroundColor = '#00ff00';
-                        videchannelstate2.innerHTML = channelOutput['2'];
-                        var videchannelstate3 = document.getElementById('videchannelstate3')
-                        videchannelstate3.style.backgroundColor = '#00ff00';
-                        videchannelstate3.innerHTML = channelOutput['3'];
-                        var videchannelstate4 = document.getElementById('videchannelstate4')
-                        videchannelstate4.style.backgroundColor = '#00ff00';
-                        videchannelstate4.innerHTML = channelOutput['4'];
-                        var videchannelstate5 = document.getElementById('videchannelstate5')
-                        videchannelstate5.style.backgroundColor = '#00ff00';
-                        videchannelstate5.innerHTML = channelOutput['5'];
-                        var videchannelstate6 = document.getElementById('videchannelstate6')
-                        videchannelstate6.style.backgroundColor = '#00ff00';
-                        videchannelstate6.innerHTML = channelOutput['6'];
-                        var videchannelstate7 = document.getElementById('videchannelstate7')
-                        videchannelstate7.style.backgroundColor = '#00ff00';
-                        videchannelstate7.innerHTML = channelOutput['7'];
-                        var videchannelstate8 = document.getElementById('videchannelstate8')
-                        videchannelstate8.style.backgroundColor = '#00ff00';
-                        videchannelstate8.innerHTML = channelOutput['8'];
+                        setVideoChannelStates(channelOutput, serviceError)
                     }
                 }
             };
             videoGet.send();
+        }
+
+        function setVideoChannelStates(channelOutput, serviceError) {
+            var channelColor = '#00ff00';
+            if (serviceError) {
+                channelColor = 'gray';
+            }
+            var videchannelstate1 = document.getElementById('videchannelstate1')
+            videchannelstate1.style.backgroundColor = channelColor;
+            videchannelstate1.innerHTML = channelOutput['1'];
+            var videchannelstate2 = document.getElementById('videchannelstate2')
+            videchannelstate2.style.backgroundColor = channelColor;
+            videchannelstate2.innerHTML = channelOutput['2'];
+            var videchannelstate3 = document.getElementById('videchannelstate3')
+            videchannelstate3.style.backgroundColor = channelColor;
+            videchannelstate3.innerHTML = channelOutput['3'];
+            var videchannelstate4 = document.getElementById('videchannelstate4')
+            videchannelstate4.style.backgroundColor = channelColor;
+            videchannelstate4.innerHTML = channelOutput['4'];
+            var videchannelstate5 = document.getElementById('videchannelstate5')
+            videchannelstate5.style.backgroundColor = channelColor;
+            videchannelstate5.innerHTML = channelOutput['5'];
+            var videchannelstate6 = document.getElementById('videchannelstate6')
+            videchannelstate6.style.backgroundColor = channelColor;
+            videchannelstate6.innerHTML = channelOutput['6'];
+            var videchannelstate7 = document.getElementById('videchannelstate7')
+            videchannelstate7.style.backgroundColor = channelColor;
+            videchannelstate7.innerHTML = channelOutput['7'];
+            var videchannelstate8 = document.getElementById('videchannelstate8')
+            videchannelstate8.style.backgroundColor = channelColor;
+            videchannelstate8.innerHTML = channelOutput['8'];
         }
 
         function getAudioStatus() {
@@ -270,13 +315,13 @@
                 if (audioGet.readyState == 4) {
                     var statusmessage = document.getElementById('statusmessage');
                     var audiostatus = document.getElementById('audiostatus');
-                    if (audioGet.status > 399) {
-                        statusmessage.innerHTML = 'Audio mixer is unavailable over the network';
+                    if (audioGet.status == 0 || audioGet.status > 399) {
+                        statusmessage.innerHTML = 'audio mixer is unavailable over the network';
                         statusmessage.style.color = 'red';
-                        audiostatus.style.backgroundColor = 'red';
-                        audioError = true;
+                        audiostatus.style.backgroundColor = 'gray';
+                        serviceError = true;
                     } else {
-                        audioError = false;
+                        serviceError = false;
                         audiostatus.style.backgroundColor = '#00ff00';
                         var audio_state = JSON.parse(audioGet.responseText);
                         var mixers = Object.keys(audio_state['outputs']);
@@ -292,13 +337,27 @@
         }
 
         function loadScene(scenename) {
-            var jsonSubmit = JSON.stringify(config['scenes'][scenename]);
-            console.log('submitting: ' + jsonSubmit);
-            var sceneSet = new XMLHttpRequest();
-            sceneSet.open("POST", '/scene', true);
-            sceneSet.setRequestHeader('Content-Type', 'application/json');
-            sceneSet.send(jsonSubmit);
-            getVideoStatus();
+            if (!serviceError) {
+                var jsonSubmit = JSON.stringify(config['scenes'][scenename]);
+                console.log('submitting: ' + jsonSubmit);
+                var sceneSet = new XMLHttpRequest();
+                sceneSet.open("POST", '/scene', true);
+                sceneSet.setRequestHeader('Content-Type', 'application/json');
+                sceneSet.onreadystatechange = function () {
+                    if (sceneSet.readyState == 4) {
+                        var statusmessage = document.getElementById('statusmessage');
+                        if (sceneSet.status == 0 || sceneSet.status > 399) {
+                            statusmessage.innerHTML = 'could not apply scene';
+                            statusmessage.style.color = 'red';
+                            serviceError = true;
+                        } else {
+                            highlightActiveScene(scenename);
+                            getVideoStatus();
+                        }
+                    }
+                };
+                sceneSet.send(jsonSubmit);
+            }
         }
     </script>
 </body>

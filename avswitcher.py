@@ -7,6 +7,7 @@ import json
 import socket
 import time
 import subprocess
+import datetime
 
 from flask import Flask, request, jsonify, Response
 
@@ -26,6 +27,7 @@ CONFIG = {
     },
     'XAIRSETSCENE': '/usr/bin/XAirSetScene',
     'XAIRCMD': '/usr/bin/XAir_Command',
+    'LIVELYNESS_CHECK_SECS': 2,
     'scenes': {}
 }
 
@@ -38,6 +40,33 @@ CUT = '/usr/bin/cut'
 SED = '/bin/sed'
 
 app = Flask('avswitcher')
+
+
+last_scene = None;
+last_scene_loaded = None;
+last_audio_status = None;
+last_video_state = {};
+
+
+@app.route('/status', methods=['GET'])
+def return_last_status():
+    ahost = CONFIG['AUDIO_MIXER_IP']
+    if('host' in request.args):
+        ahost = request.args.get('host')
+    if not last_audio_status:
+        get_audio_status(ahost)
+    vhost = CONFIG['AV_SWITCH_IP']
+    port = CONFIG['AV_SWITCH_PORT']
+    if not last_video_state:
+        query_av_state(vhost, port)
+    now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+    object = {
+        'timestamp': now,
+        'last_scene': last_scene,
+        'last_scene_loaded': last_scene_loaded,
+        'last_video_state': last_video_state
+    }
+    return jsonify(object)
 
 
 @app.route('/scene', methods=['POST'])
@@ -103,28 +132,6 @@ def video_service():
         return query_av_state(host, port)
 
 
-def query_av_state(host, port):
-    avm = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
-    avm.settimeout(5)
-    avm.connect((host, port))
-    query_state = bytes.fromhex('a56c140082010100000000000000000053fc01ae')
-    avm.send(query_state)
-    current_state = avm.recv(100)
-    current_state = current_state[18:26].strip()
-    outputs = {}
-    for indx, ch in enumerate(current_state):
-        outputs[str(indx + 1)] = '%s' % ch
-    return jsonify({'outputs': outputs})
-
-
-def set_av_state(host, port, input, output):
-    avm = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
-    avm.connect((host, port))
-    cmd = "%sv%s." % (input, output)
-    print("sending cmd: %s to %s:%d" % (cmd, host, port))
-    avm.send(cmd.encode())
-
-
 @app.route('/audio', methods=['GET', 'POST'])
 def audio_service():
     host = CONFIG['AUDIO_MIXER_IP']
@@ -146,7 +153,47 @@ def audio_service():
             return get_audio_status(host)
 
 
+@app.route('/config', methods=['GET'])
+def config_service():
+    return jsonify(CONFIG)
+
+
+@app.route('/', methods=['GET'])
+def index():
+    return app.send_static_file('index.html')
+
+
+@app.route('/<path:path>')
+def catch_all(path):
+    return app.send_static_file(path)
+
+
+def query_av_state(host, port):
+    global last_video_state
+    avm = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
+    avm.settimeout(5)
+    avm.connect((host, port))
+    query_state = bytes.fromhex('a56c140082010100000000000000000053fc01ae')
+    avm.send(query_state)
+    current_state = avm.recv(100)
+    current_state = current_state[18:26].strip()
+    outputs = {}
+    for indx, ch in enumerate(current_state):
+        outputs[str(indx + 1)] = '%s' % ch
+    last_video_state = {'outputs': outputs}
+    return jsonify({'outputs': outputs})
+
+
+def set_av_state(host, port, input, output):
+    avm = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
+    avm.connect((host, port))
+    cmd = "%sv%s." % (input, output)
+    print("sending cmd: %s to %s:%d" % (cmd, host, port))
+    avm.send(cmd.encode())
+
+
 def set_audio_scene(host, scene):
+    global last_scene, last_scene_loaded
     scenefile = "%s/static/audioscenes/%s" % (os.path.dirname(
         os.path.realpath(__file__)), CONFIG['scenes'][scene]['file'])
     initfile = "%s/static/audioscenes/%s" % (os.path.dirname(
@@ -163,6 +210,8 @@ def set_audio_scene(host, scene):
         error.status_code = 500
         raise error
     else:
+        last_scene_loaded = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        last_scene = scene
         return jsonify({'scene': scene})
 
 
@@ -172,9 +221,13 @@ def get_audio_status(host):
     bs.connect((host, 10024))
     bs.send(b"/status\n")
     current_state = bs.recv(100)
-    current_state = current_state.decode()[16:].replace('\x00',' ').strip().split()
+    current_state = current_state.decode()[16:].replace(
+        '\x00', ' ').strip().split()
+    now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     outputs = {}
-    outputs[current_state[1]] = {'status': current_state[0], 'name': current_state[2]}
+    outputs[current_state[1]] = {
+        'status': current_state[0], 'name': current_state[2], 'polled': now}
+    last_audio_status = now
     return jsonify({'outputs': outputs})
 
 
@@ -186,21 +239,6 @@ def load_config():
         print('loading config from %s' % config_file)
         with open(config_file) as json_data_file:
             CONFIG = json.load(json_data_file)
-
-
-@app.route('/config', methods=['GET'])
-def config_service():
-    return jsonify(CONFIG)
-
-
-@app.route('/', methods=['GET'])
-def index():
-    return app.send_static_file('index.html')
-
-
-@app.route('/<path:path>')
-def catch_all(path):
-    return app.send_static_file(path)
 
 
 if __name__ == '__main__':
