@@ -251,6 +251,18 @@
                 }
             ],
             "audioscene":  "1MeetingNoCameras"
+        },
+        "0131MeetingClassroomPC" : {
+            "file": "1MeetingClassroomPC.scn",
+            "imgagefile": "1MeetingClassroomPC.png",
+            "description": "1 Meeting displaying Windows 2 Monitor from the Classroom PC",
+            "videochannels": [
+                {
+                    "input": "3",
+                    "output": "1,2,3,4,5,6,7,8"
+                }
+            ],
+            "audioscene":  "1MeetingClassroomPC"
         }
     }
 }
