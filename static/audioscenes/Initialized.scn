@@ -17,7 +17,7 @@
 /ch/01/eq/2 PEQ 496.6 +0.00 2.0
 /ch/01/eq/3 PEQ 1k97 +0.00 2.0
 /ch/01/eq/4 HShv 10k02 +0.00 2.0
-/ch/01/mix ON   -oo ON +0
+/ch/01/mix O   -oo ON +0
 /ch/01/mix/01   -oo OFF POSTEQ +0
 /ch/01/mix/02   -oo OFF POSTEQ
 /ch/01/mix/03   -oo OFF POSTEQ +0
@@ -42,7 +42,7 @@
 /ch/02/eq/2 PEQ 496.6 +0.00 2.0
 /ch/02/eq/3 PEQ 1k97 +0.00 2.0
 /ch/02/eq/4 HShv 10k02 +0.00 2.0
-/ch/02/mix ON   -oo ON +0
+/ch/02/mix O   -oo ON +0
 /ch/02/mix/01   -oo OFF POSTEQ +0
 /ch/02/mix/02   -oo OFF POSTEQ
 /ch/02/mix/03   -oo OFF POSTEQ +0
@@ -67,7 +67,7 @@
 /ch/03/eq/2 PEQ 496.6 +0.00 2.0
 /ch/03/eq/3 PEQ 1k97 +0.00 2.0
 /ch/03/eq/4 HShv 10k02 +0.00 2.0
-/ch/03/mix ON   -oo ON +0
+/ch/03/mix O   -oo ON +0
 /ch/03/mix/01   -oo OFF POSTEQ +0
 /ch/03/mix/02   -oo OFF POSTEQ
 /ch/03/mix/03   -oo OFF POSTEQ +0
@@ -117,7 +117,7 @@
 /ch/05/eq/2 PEQ 496.6 +0.00 2.0
 /ch/05/eq/3 PEQ 1k97 +0.00 2.0
 /ch/05/eq/4 HShv 10k02 +0.00 2.0
-/ch/05/mix ON   -oo ON +0
+/ch/05/mix O   -oo ON +0
 /ch/05/mix/01   -oo OFF POSTEQ +0
 /ch/05/mix/02   -oo OFF POSTEQ
 /ch/05/mix/03   -oo OFF POSTEQ +0
@@ -142,7 +142,7 @@
 /ch/06/eq/2 PEQ 496.6 +0.00 2.0
 /ch/06/eq/3 PEQ 1k97 +0.00 2.0
 /ch/06/eq/4 HShv 10k02 +0.00 2.0
-/ch/06/mix ON   -oo ON +0
+/ch/06/mix O   -oo ON +0
 /ch/06/mix/01   -oo OFF POSTEQ +0
 /ch/06/mix/02   -oo OFF POSTEQ
 /ch/06/mix/03   -oo OFF POSTEQ +0
@@ -167,7 +167,7 @@
 /ch/07/eq/2 PEQ 496.6 +0.00 2.0
 /ch/07/eq/3 PEQ 1k97 +0.00 2.0
 /ch/07/eq/4 HShv 10k02 +0.00 2.0
-/ch/07/mix ON   -oo ON +0
+/ch/07/mix O   -oo ON +0
 /ch/07/mix/01   -oo OFF POSTEQ +0
 /ch/07/mix/02   -oo OFF POSTEQ
 /ch/07/mix/03   -oo OFF POSTEQ +0
@@ -192,7 +192,7 @@
 /ch/08/eq/2 PEQ 496.6 +0.00 2.0
 /ch/08/eq/3 PEQ 1k97 +0.00 2.0
 /ch/08/eq/4 HShv 10k02 +0.00 2.0
-/ch/08/mix ON   -oo ON +0
+/ch/08/mix O   -oo ON +0
 /ch/08/mix/01   -oo OFF POSTEQ +0
 /ch/08/mix/02   -oo OFF POSTEQ
 /ch/08/mix/03   -oo OFF POSTEQ +0
@@ -217,7 +217,7 @@
 /ch/09/eq/2 PEQ 496.6 +0.00 2.0
 /ch/09/eq/3 PEQ 1k97 +0.00 2.0
 /ch/09/eq/4 HShv 10k02 +0.00 2.0
-/ch/09/mix ON   -oo ON +0
+/ch/09/mix O   -oo ON +0
 /ch/09/mix/01   -oo OFF POSTEQ +0
 /ch/09/mix/02   -oo OFF POSTEQ
 /ch/09/mix/03   -oo OFF POSTEQ +0
@@ -242,7 +242,7 @@
 /ch/10/eq/2 PEQ 496.6 +0.00 2.0
 /ch/10/eq/3 PEQ 1k97 +0.00 2.0
 /ch/10/eq/4 HShv 10k02 +0.00 2.0
-/ch/10/mix ON   -oo ON +0
+/ch/10/mix O   -oo ON +0
 /ch/10/mix/01   -oo OFF POSTEQ +0
 /ch/10/mix/02   -oo OFF POSTEQ
 /ch/10/mix/03   -oo OFF POSTEQ +0
@@ -267,7 +267,7 @@
 /ch/11/eq/2 PEQ 496.6 +0.00 2.0
 /ch/11/eq/3 PEQ 1k97 +0.00 2.0
 /ch/11/eq/4 HShv 10k02 +0.00 2.0
-/ch/11/mix ON   -oo ON +0
+/ch/11/mix O   -oo ON +0
 /ch/11/mix/01   -oo OFF POSTEQ +0
 /ch/11/mix/02   -oo OFF POSTEQ
 /ch/11/mix/03   -oo OFF POSTEQ +0
@@ -292,7 +292,7 @@
 /ch/12/eq/2 PEQ 496.6 +0.00 2.0
 /ch/12/eq/3 PEQ 1k97 +0.00 2.0
 /ch/12/eq/4 HShv 10k02 +0.00 2.0
-/ch/12/mix ON   -oo ON +0
+/ch/12/mix O   -oo ON +0
 /ch/12/mix/01   -oo OFF POSTEQ +0
 /ch/12/mix/02   -oo OFF POSTEQ
 /ch/12/mix/03   -oo OFF POSTEQ +0
@@ -317,7 +317,7 @@
 /ch/13/eq/2 PEQ 496.6 +0.00 2.0
 /ch/13/eq/3 PEQ 1k97 +0.00 2.0
 /ch/13/eq/4 HShv 10k02 +0.00 2.0
-/ch/13/mix ON   -oo ON +0
+/ch/13/mix O   -oo ON +0
 /ch/13/mix/01   -oo OFF POSTEQ +0
 /ch/13/mix/02   -oo OFF POSTEQ
 /ch/13/mix/03   -oo OFF POSTEQ +0
@@ -342,7 +342,7 @@
 /ch/14/eq/2 PEQ 496.6 +0.00 2.0
 /ch/14/eq/3 PEQ 1k97 +0.00 2.0
 /ch/14/eq/4 HShv 10k02 +0.00 2.0
-/ch/14/mix ON   -oo ON +0
+/ch/14/mix O   -oo ON +0
 /ch/14/mix/01   -oo OFF POSTEQ +0
 /ch/14/mix/02   -oo OFF POSTEQ
 /ch/14/mix/03   -oo OFF POSTEQ +0
@@ -367,7 +367,7 @@
 /ch/15/eq/2 PEQ 496.6 +0.00 2.0
 /ch/15/eq/3 PEQ 1k97 +0.00 2.0
 /ch/15/eq/4 HShv 10k02 +0.00 2.0
-/ch/15/mix ON   -oo ON +0
+/ch/15/mix O   -oo ON +0
 /ch/15/mix/01   -oo OFF POSTEQ +0
 /ch/15/mix/02   -oo OFF POSTEQ
 /ch/15/mix/03   -oo OFF POSTEQ +0
@@ -392,7 +392,7 @@
 /ch/16/eq/2 PEQ 496.6 +0.00 2.0
 /ch/16/eq/3 PEQ 1k97 +0.00 2.0
 /ch/16/eq/4 HShv 10k02 +0.00 2.0
-/ch/16/mix ON   -oo ON +0
+/ch/16/mix O   -oo ON +0
 /ch/16/mix/01   -oo OFF POSTEQ +0
 /ch/16/mix/02   -oo OFF POSTEQ
 /ch/16/mix/03   -oo OFF POSTEQ +0
@@ -412,7 +412,7 @@
 /rtn/aux/eq/2 PEQ 496.6 +0.00 2.0
 /rtn/aux/eq/3 PEQ 1k97 +0.00 2.0
 /rtn/aux/eq/4 HShv 10k02 +0.00 2.0
-/rtn/aux/mix ON   -oo ON +0
+/rtn/aux/mix O   -oo ON +0
 /rtn/aux/mix/01   -oo OFF POSTEQ +0
 /rtn/aux/mix/02   -oo OFF POSTEQ
 /rtn/aux/mix/03   -oo OFF POSTEQ +0
