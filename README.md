@@ -15,7 +15,15 @@ The original source code for the utilities is found here:
 
 A Docker file is included which can build a container image. 
 
-`docker build 
+`docker build -t khavmixer:latest .`
+
+Running the container:
+
+`docker run --name khavmixer -p 3100:3100 -d --rm khavmixer:latest`
+
+Then open a browser to:
+
+`http://localhost:3100`
 
 The `/var/lib/hedgcoxekhav/static` directory should be volume mounted to a local directory to maintain the screnes and web layout from the local file system.
 
