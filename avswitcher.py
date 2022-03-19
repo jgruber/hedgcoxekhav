@@ -25,6 +25,10 @@ CONFIG = {
         'file': 'Initialized.scn',
         'description': 'Scene used to initialize mixer settings'
     },
+    'MUTE_SCENE': {
+        'file': 'Mute.scn',
+        'description': 'Mute all channel faders and sends'
+    },
     'XAIRSETSCENE': '/usr/bin/XAirSetScene',
     'XAIRCMD': '/usr/bin/XAir_Command',
     'LIVELYNESS_CHECK_SECS': 2,
@@ -42,10 +46,10 @@ SED = '/bin/sed'
 app = Flask('avswitcher')
 
 
-last_scene = None;
-last_scene_loaded = None;
-last_audio_status = None;
-last_video_state = {};
+last_scene = None
+last_scene_loaded = None
+last_audio_status = None
+last_video_state = {}
 
 
 @app.route('/status', methods=['GET'])
@@ -142,12 +146,14 @@ def audio_service():
             host = body.get('host')
         if ('scene' in body):
             scene = body.get('scene')
+        mute_audio(host)
         return set_audio_scene(host, scene)
     else:
         if('host' in request.args):
             host = request.args.get('host')
         if('scene' in request.args):
             scene = request.args.get('scene')
+            mute_audio(host)
             return set_audio_scene(host, scene)
         else:
             return get_audio_status(host)
@@ -192,7 +198,84 @@ def set_av_state(host, port, input, output):
     avm.send(cmd.encode())
 
 
+def initialize_audio_scene():
+    global last_scene, last_scene_loaded
+    host = CONFIG['AUDIO_MIXER_IP']
+    initfile = "%s/static/audioscenes/%s" % (os.path.dirname(
+        os.path.realpath(__file__)), CONFIG['INIT_AUDIO_SCENE']['file'])
+    cmd = "cat %s | %s -i %s" % (
+        initfile, CONFIG['XAIRSETSCENE'], host
+    )
+    print('sending cmd: %s' % cmd)
+    FNULL = open(os.devnull)
+    exitcode = subprocess.call(
+        cmd, shell=True, stdout=FNULL, stderr=subprocess.STDOUT)
+    if exitcode != 0:
+        error = Exception(
+            "could not set initialization scene - exit code %s" % exitcode)
+        error.status_code = 500
+        raise error
+    else:
+        defaultscenefile = "%s/static/audioscenes/%s" % (os.path.dirname(
+            os.path.realpath(__file__)), CONFIG['DEFAULT_AUDIO_SCENE']['file'])
+        cmd = "cat %s | %s -i %s" % (
+            defaultscenefile, CONFIG['XAIRSETSCENE'], host
+        )
+        print('sending cmd: %s' % cmd)
+        FNULL = open(os.devnull)
+        exitcode = subprocess.call(
+            cmd, shell=True, stdout=FNULL, stderr=subprocess.STDOUT)
+        if exitcode != 0:
+            error = Exception(
+                "could not set default scene %s - exit code %s" % exitcode)
+            error.status_code = 500
+            raise error
+        else:
+            last_scene_loaded = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            last_scene = 'Default'
+            return jsonify({'scene': CONFIG['DEFAULT_AUDIO_SCENE']['file']})
+
+
+def mute_audio(host):
+    mutescenefile = "%s/static/audioscenes/%s" % (os.path.dirname(
+        os.path.realpath(__file__)), CONFIG['MUTE_SCENE']['file'])
+    cmd = "cat %s | %s -i %s" % (
+        mutescenefile, CONFIG['XAIRSETSCENE'], host
+    )
+    print('sending cmd: %s' % cmd)
+    FNULL = open(os.devnull)
+    exitcode = subprocess.call(
+        cmd, shell=True, stdout=FNULL, stderr=subprocess.STDOUT)
+    if exitcode != 0:
+        error = Exception(
+            "could not mute audio - exit code %s" % exitcode)
+        error.status_code = 500
+        raise error
+
+
 def set_audio_scene(host, scene):
+    global last_scene, last_scene_loaded
+    scenefile = "%s/static/audioscenes/%s" % (os.path.dirname(
+        os.path.realpath(__file__)), CONFIG['scenes'][scene]['file'])
+    cmd = "cat %s | %s -i %s" % (
+        scenefile, CONFIG['XAIRSETSCENE'], host
+    )
+    print('sending cmd: %s' % cmd)
+    FNULL = open(os.devnull)
+    exitcode = subprocess.call(
+        cmd, shell=True, stdout=FNULL, stderr=subprocess.STDOUT)
+    if exitcode != 0:
+        error = Exception(
+            "could not set scene %s - exit code %s" % (scene, exitcode))
+        error.status_code = 500
+        raise error
+    else:
+        last_scene_loaded = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        last_scene = scene
+        return jsonify({'scene': scene})
+
+
+def set_audio_scene_init_diff(host, scene):
     global last_scene, last_scene_loaded
     scenefile = "%s/static/audioscenes/%s" % (os.path.dirname(
         os.path.realpath(__file__)), CONFIG['scenes'][scene]['file'])
@@ -244,6 +327,7 @@ def load_config():
 if __name__ == '__main__':
     signal.signal(signal.SIGHUP, load_config)
     load_config()
+    initialize_audio_scene()
     app.run(host='0.0.0.0',
             port=CONFIG['WEB_SERVICE_PORT'],
             debug=CONFIG['WEB_SERVICE_DEBUG'],
