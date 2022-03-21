@@ -15,7 +15,7 @@
             cursor: pointer;
         }
 
-        .statusbadge {
+        .badge {
             float: right;
             border-radius: 100%;
             margin-top: 20px;
@@ -35,8 +35,20 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
-        .statusbadge:active {
+        .badge:active {
             transform: translateY(5px);
+        }
+
+        .statusbadge {
+            background-color: gray;
+        }
+
+        .reloadbadge {
+            background-color: #99f;
+        }
+
+        .badgesbar {
+            float: right;
         }
 
         .statusmessage {
@@ -80,6 +92,10 @@
             margin: auto;
             width: 50%;
             text-align: center;
+        }
+
+        .content {
+            float: left;
         }
 
         .controlpanel {
@@ -146,18 +162,21 @@
                     ?
                 </div>
             </div>
+            <div class='badgesbar' id='badges'>
+                <div class='badge reloadbadge' id='reload' title='Service config reload' onclick='forceConfigReload()'>
+                    <span class='centered'>R</span>
+                </div>
+                <div class='badge statusbadge' id='audiostatus' title='Audio service status' onclick='getAudioStatus()'>
+                    <span class='centered'>A</span>
+                </div>
+            </div>
             <div class='statusmessage' id='statusmessage'>
                 establishing communications
             </div>
-            <div class='statusbadge' id='audiostatus' title='Audio service status' onclick='getAudioStatus()'>
-                <span class='centered'>A</span>
-            </div>
-            <div class='statusbadge' id='reload' title='Service config reload' onclick='forceConfigReload()'>
-                <span class='centered'>R</span>
-            </div>
         </div>
     </nav>
-    <div class='controlpanel' id='controlpanel'>
+    <div class='content'>
+        <div class='controlpanel' id='controlpanel' />
     </div>
     <footer>
     </footer>

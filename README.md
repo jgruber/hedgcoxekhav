@@ -9,9 +9,9 @@ OSC commands and scene settings to the Behringer X18R audio mixer are handled th
 
 [XAIRUtilities](https://sites.google.com/site/xairutilities/)
 
-The original source code for the utilities is found here:
+The patched version of pmaillot's original source code for the CLI utilities is found here:
 
-[X32Utilities](https://github.com/pmaillot/X32-Behringer)
+[X32Utilities](https://github.com/jgruber/X32-Behringer)
 
 A Docker file is included which can build a container image. 
 
