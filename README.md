@@ -3,7 +3,7 @@ Python Flask Service Interface for AV Scene Switching
 
 Simple webinterface frontend to AVMatrix SDI router and Behringer X18R audio mixer.
 
-You can edit the application settings and available scenes in the `config.json` file.
+You can edit the application settings and available scenes in the `config.yaml` file in the `static\scenes` directory.
 
 OSC commands and scene settings to the Behringer X18R audio mixer are handled through the utilies found here:
 
@@ -91,15 +91,15 @@ https://github.com/jgruber/X32-Behringer
 A scene object looks like this:
 
 ```
-scene_playlist_name:
-    file: [The XAir saved scene in the scenes directory]
-    description: [The scene description]
-    videochannels:
-        - input: '[input number]'
-          output: '[comma separated list of output numbers]'
-        - input: '[input number]'
-          output: '[comma separated list of output numbers]'
-    audioscene: [Audio scene index name to which as the status for the active scene set]
+    scene_playlist_name:
+        file: [The XAir saved scene in the scenes directory]
+        description: [The scene description]
+        videochannels:
+            - input: '[input number]'
+              output: '[comma separated list of output numbers]'
+            - input: '[input number]'
+              output: '[comma separated list of output numbers]'
+        audioscene: [Audio scene index name to which as the status for the active scene set]
 ```
 
 An Example with two defined scenes would look like this:
