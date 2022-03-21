@@ -4,6 +4,7 @@ import os
 import sys
 import signal
 import json
+import yaml
 import socket
 import time
 import subprocess
@@ -42,6 +43,8 @@ AUDIO_MIXER_INIT_SCENE = ''
 DIFF = '/usr/bin/diff'
 CUT = '/usr/bin/cut'
 SED = '/bin/sed'
+
+SCENES_DIR = 'static/scenes'
 
 app = Flask('avswitcher')
 
@@ -164,6 +167,12 @@ def config_service():
     return jsonify(CONFIG)
 
 
+@app.route('/config', methods=['POST'])
+def reload_config():
+    load_config()
+    return jsonify(CONFIG)
+
+
 @app.route('/', methods=['GET'])
 def index():
     return app.send_static_file('index.html')
@@ -201,8 +210,8 @@ def set_av_state(host, port, input, output):
 def initialize_audio_scene():
     global last_scene, last_scene_loaded
     host = CONFIG['AUDIO_MIXER_IP']
-    initfile = "%s/static/audioscenes/%s" % (os.path.dirname(
-        os.path.realpath(__file__)), CONFIG['INIT_AUDIO_SCENE']['file'])
+    initfile = "%s/%s/%s" % (os.path.dirname(
+        os.path.realpath(__file__)), SCENES_DIR, CONFIG['INIT_AUDIO_SCENE']['file'])
     cmd = "cat %s | %s -i %s" % (
         initfile, CONFIG['XAIRSETSCENE'], host
     )
@@ -216,8 +225,8 @@ def initialize_audio_scene():
         error.status_code = 500
         raise error
     else:
-        defaultscenefile = "%s/static/audioscenes/%s" % (os.path.dirname(
-            os.path.realpath(__file__)), CONFIG['DEFAULT_AUDIO_SCENE']['file'])
+        defaultscenefile = "%s/%s/%s" % (os.path.dirname(
+            os.path.realpath(__file__)), SCENES_DIR, CONFIG['DEFAULT_AUDIO_SCENE']['file'])
         cmd = "cat %s | %s -i %s" % (
             defaultscenefile, CONFIG['XAIRSETSCENE'], host
         )
@@ -233,12 +242,11 @@ def initialize_audio_scene():
         else:
             last_scene_loaded = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             last_scene = 'Default'
-            return jsonify({'scene': CONFIG['DEFAULT_AUDIO_SCENE']['file']})
 
 
 def mute_audio(host):
-    mutescenefile = "%s/static/audioscenes/%s" % (os.path.dirname(
-        os.path.realpath(__file__)), CONFIG['MUTE_SCENE']['file'])
+    mutescenefile = "%s/%s/%s" % (os.path.dirname(
+        os.path.realpath(__file__)), SCENES_DIR, CONFIG['MUTE_SCENE']['file'])
     cmd = "cat %s | %s -i %s" % (
         mutescenefile, CONFIG['XAIRSETSCENE'], host
     )
@@ -255,8 +263,8 @@ def mute_audio(host):
 
 def set_audio_scene(host, scene):
     global last_scene, last_scene_loaded
-    scenefile = "%s/static/audioscenes/%s" % (os.path.dirname(
-        os.path.realpath(__file__)), CONFIG['scenes'][scene]['file'])
+    scenefile = "%s/%s/%s" % (os.path.dirname(
+        os.path.realpath(__file__)), SCENES_DIR, CONFIG['scenes'][scene]['file'])
     cmd = "cat %s | %s -i %s" % (
         scenefile, CONFIG['XAIRSETSCENE'], host
     )
@@ -277,10 +285,10 @@ def set_audio_scene(host, scene):
 
 def set_audio_scene_init_diff(host, scene):
     global last_scene, last_scene_loaded
-    scenefile = "%s/static/audioscenes/%s" % (os.path.dirname(
-        os.path.realpath(__file__)), CONFIG['scenes'][scene]['file'])
-    initfile = "%s/static/audioscenes/%s" % (os.path.dirname(
-        os.path.realpath(__file__)), CONFIG['INIT_AUDIO_SCENE']['file'])
+    scenefile = "%s/%s/%s" % (os.path.dirname(
+        os.path.realpath(__file__)), SCENES_DIR, CONFIG['scenes'][scene]['file'])
+    initfile = "%s/%s/%s" % (os.path.dirname(
+        os.path.realpath(__file__)), SCENES_DIR, CONFIG['INIT_AUDIO_SCENE']['file'])
     cmd = "%s -y --suppress-common %s %s | %s -d'|' -f1 | %s 's/[[:space:]]*$//' | %s -i %s" % (
         DIFF, scenefile, initfile, CUT, SED, CONFIG['XAIRSETSCENE'], host)
     print('sending cmd: %s' % cmd)
@@ -316,12 +324,12 @@ def get_audio_status(host):
 
 def load_config():
     global CONFIG
-    config_file = "%s/config.json" % os.path.dirname(
-        os.path.realpath(__file__))
+    config_file = "%s/%s/config.yaml" % (os.path.dirname(
+        os.path.realpath(__file__)), SCENES_DIR)
     if os.path.exists(config_file):
         print('loading config from %s' % config_file)
-        with open(config_file) as json_data_file:
-            CONFIG = json.load(json_data_file)
+        with open(config_file) as config_data_file:
+            CONFIG = yaml.safe_load(config_data_file)
 
 
 if __name__ == '__main__':

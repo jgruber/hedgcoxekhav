@@ -1,0 +1,117 @@
+---
+WEB_SERVICE_PORT: 3100
+WEB_SERVICE_DEBUG: false
+AV_SWITCH_IP: 192.168.1.101
+AV_SWITCH_PORT: 7000
+AUDIO_MIXER_IP: 192.168.1.107
+DEFAULT_AUDIO_SCENE:
+  file: 001_1_Meeting.scn
+  description: Default setting for public meetings
+INIT_AUDIO_SCENE:
+  file: Initialized.scn
+  description: Scene used to initialize mixer settings
+MUTE_SCENE:
+  file: Mute.scn
+  description: Mute all channel faders and sends
+XAIRSETSCENE: "/usr/bin/XAirSetScene"
+XAIRCMD: "/usr/bin/XAir_Command"
+IMAGE_HTML_PATH: "/scenes/images"
+LIVELYNESS_CHECK_SECS: 2
+scenes:
+  001_Default:
+    file: 001_1_Meeting.scn
+    imgagefile: 1_Meeting.png
+    description: Default setting for public meetings
+    videochannels:
+    - input: '1'
+      output: '1,2,3,4,5,6,7'
+    - input: '2'
+      output: '8'
+    audioscene: Default
+  002_2_Meetings_Classroom_2_Mics:
+    file: 002_2_Meetings_Classroom_2_Mics.scn
+    imgagefile: 2_Meetings_Classroom_2_Mics.png
+    description: Classroom has its own meeting with both Wireless Microphones
+    videochannels:
+    - input: '1'
+      output: '1,2,3,5,6,7'
+    - input: '2'
+      output: '8'
+    - input: '3'
+      output: '4'
+    audioscene: 2_Meetings_Classroom_2_Mics
+  003_2_Meetings_Classroom_1_Mic:
+    file: 003_2_Meetings_Classroom_1_Mic.scn
+    imgagefile: 2_Meetings_Classroom_1_Mic.png
+    description: Classom has its own meeting with only Blue Wireless Microphone
+    videochannels:
+    - input: '1'
+      output: '1,2,3,5,6,7'
+    - input: '2'
+      output: '8'
+    - input: '3'
+      output: '4'
+    audioscene: 2_Meetings_Classroom_1_Mic
+  004_2_Meetings_Classroom_Overflow_to_Library:
+    file: 004_2_Meetings_Classroom_Overflow_to_Library.scn
+    imgagefile: 2_Meetings_Classroom_Overflow_to_Library.png
+    description: 2 Meetings with Classroom and Library tied together, each with a
+      Wireless Microphone
+    videochannels:
+    - input: '1'
+      output: '1,2,3,6,7'
+    - input: '2'
+      output: '8'
+    - input: '3'
+      output: '4,5'
+    audioscene: 2_Meetings_Classroom_Overflow_to_Library
+  005_3_Meetings:
+    file: 005_3_Meetings.scn
+    imgagefile: 3_Meetings.png
+    description: 3 Meetings, Each back room with 1 Wireless Microphone
+    videochannels:
+    - input: '1'
+      output: '1,2,3,6,7'
+    - input: '2'
+      output: '8'
+    - input: '3'
+      output: '4'
+    - input: '8'
+      output: '5'
+    audioscene: 3_Meetings
+  006_3_Meetings_Classroom_2_Mics:
+    file: 006_3_Meetings_Classroom_2_Mics.scn
+    imgagefile: 3_Meetings_Classroom_2_Mics.png
+    description: 3 Meetings, Classroom has 2 Wireless Microphones
+    videochannels:
+    - input: '1'
+      output: '1,2,3,6,7'
+    - input: '2'
+      output: '8'
+    - input: '3'
+      output: '4'
+    - input: '8'
+      output: '5'
+    audioscene: 3_Meetings_Classroom_2_Mics
+  007_3_Meeting_Auditorium_All_Mics:
+    file: 007_3_Meeting_Auditorium_All_Mics.scn
+    imgagefile: 3_Meetings_Auditorium_All_Mics.png
+    description: 3 Meetings, All Wireless Microphones in the Main Auditorium
+    videochannels:
+    - input: '1'
+      output: '1,2,3,6,7'
+    - input: '2'
+      output: '8'
+    - input: '3'
+      output: '4'
+    - input: '8'
+      output: '5'
+    audioscene: 3_Meetings_Auditorium_All_Mics
+  008_Classroom_PC_Backup:
+    file: '008_Classroom_PC_Backup.scn'
+    imgagefile: Classroom_PC_Backup.png
+    description: Classroom PC as main media playback for auditorium
+    videochannels:
+    - input: '3'
+      output: '1,2,3,4,5,6,7,8'
+    audioscene: Classroom_PC_Backup

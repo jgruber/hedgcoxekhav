@@ -105,6 +105,10 @@
             transform: translateY(5px);
         }
 
+        .loadingscene {
+            box-shadow: 9px 9px #99f;
+        }
+
         .activescene {
             box-shadow: 9px 9px #f99;
         }
@@ -148,6 +152,9 @@
             <div class='statusbadge' id='audiostatus' title='Audio service status' onclick='getAudioStatus()'>
                 <span class='centered'>A</span>
             </div>
+            <div class='statusbadge' id='reload' title='Service config reload' onclick='forceConfigReload()'>
+                <span class='centered'>R</span>
+            </div>
         </div>
     </nav>
     <div class='controlpanel' id='controlpanel'>
@@ -172,7 +179,9 @@
                     scenenames.forEach((scenename, index) => {
                         var scene = config['scenes'][scenename];
                         scenesHTML = scenesHTML +
-                            "<figure class='controlpanelbutton'><img src='/img/" +
+                            "<figure class='controlpanelbutton'><img src='" +
+                            config['IMAGE_HTML_PATH'] +
+                            "/" +
                             scene['imgagefile'] +
                             "' id='" + scenename + "' class='controlpanelbutton__img' alt='" +
                             scene['description'] +
@@ -188,6 +197,28 @@
             configGet.send();
             getAudioStatus();
             getVideoStatus();
+        }
+
+        function forceConfigReload() {
+            if (!serviceError) {
+                console.log('submitting request to reload configurations');
+                var configReload = new XMLHttpRequest();
+                configReload.open("POST", '/config', true);
+                configReload.setRequestHeader('Content-Type', 'application/json');
+                configReload.onreadystatechange = function () {
+                    if (configReload.readyState == 4) {
+                        var statusmessage = document.getElementById('statusmessage');
+                        if (configReload.status == 0 || configReload.status > 399) {
+                            statusmessage.innerHTML = 'configuration was not reloaded';
+                            statusmessage.style.color = 'red';
+                            serviceError = true;
+                        } else {
+                            initControlPanel();
+                        }
+                    }
+                };
+                configReload.send();
+            }
         }
 
         function getStatusUpdate() {
@@ -251,6 +282,20 @@
                         sceneElement.classList.add('activescene');
                     } else {
                         document.getElementById(scene).classList.remove('activescene');
+                    }
+                })
+            }
+        }
+
+
+        function highlightLoadingScene(scenename) {
+            var sceneElement = document.getElementById(scenename)
+            if (sceneElement) {
+                Object.keys(config['scenes']).forEach((scene) => {
+                    if (scenename === scene) {
+                        sceneElement.classList.add('loadingscene');
+                    } else {
+                        document.getElementById(scene).classList.remove('loadingscene');
                     }
                 })
             }
@@ -344,6 +389,7 @@
 
         function loadScene(scenename) {
             if (!serviceError) {
+                highlightLoadingScene(scenename);
                 var jsonSubmit = JSON.stringify(config['scenes'][scenename]);
                 console.log('submitting: ' + jsonSubmit);
                 var sceneSet = new XMLHttpRequest();
