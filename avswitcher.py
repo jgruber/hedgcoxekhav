@@ -33,6 +33,7 @@ CONFIG = {
     'XAIRSETSCENE': '/usr/bin/XAirSetScene',
     'XAIRCMD': '/usr/bin/XAir_Command',
     'LIVELYNESS_CHECK_SECS': 2,
+    'CHANNEL_MIX_ONLY': False,
     'scenes': {}
 }
 
@@ -90,7 +91,7 @@ def scene_service():
             if scene_data['audioscene'] == CONFIG['scenes'][scenename]['audioscene']:
                 scene_found = True
                 try:
-                    set_audio_scene(CONFIG['AUDIO_MIXER_IP'], scenename)
+                    set_audio_scene(CONFIG['AUDIO_MIXER_IP'], scenename, CONFIG['CHANNEL_MIX_ONLY'])
                 except Exception as e:
                     result = {'error': e.message}
                     return jsonify(result), 500
@@ -261,13 +262,17 @@ def mute_audio(host):
         raise error
 
 
-def set_audio_scene(host, scene):
+def set_audio_scene(host, scene, channel_mix_only=False):
     global last_scene, last_scene_loaded
     scenefile = "%s/%s/%s" % (os.path.dirname(
         os.path.realpath(__file__)), SCENES_DIR, CONFIG['scenes'][scene]['file'])
     cmd = "cat %s | %s -i %s" % (
         scenefile, CONFIG['XAIRSETSCENE'], host
     )
+    if channel_mix_only:
+        cmd = "cat %s | grep ch | grep mix | %s -i %s" % (
+            scenefile, CONFIG['XAIRSETSCENE'], host
+        )
     print('sending cmd: %s' % cmd)
     FNULL = open(os.devnull)
     exitcode = subprocess.call(

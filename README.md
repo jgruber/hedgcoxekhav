@@ -86,6 +86,9 @@ https://github.com/jgruber/X32-Behringer
 
 `LIVELYNESS_CHECK_SECS`: How often to send status requests to the devices to check reachability.
 
+`CHANNEL_MIX_ONLY`: Only send channel mix settings (fader and sends) from the
+saved scene to the mixer. Default is false.
+
 `scenes`: a YAML list of scene objects to display a tile to load.
 
 A scene object looks like this:

@@ -1,5 +1,5 @@
 ---
-WEB_SERVICE_PORT: 3100
+WEB_SERVICE_PORT: 3101
 WEB_SERVICE_DEBUG: false
 AV_SWITCH_IP: 192.168.1.101
 AV_SWITCH_PORT: 7000
@@ -17,6 +17,7 @@ XAIRSETSCENE: "/usr/bin/XAirSetScene"
 XAIRCMD: "/usr/bin/XAir_Command"
 IMAGE_HTML_PATH: "/scenes/images"
 LIVELYNESS_CHECK_SECS: 2
+CHANNEL_MIX_ONLY: true
 scenes:
   001_Default:
     file: 001_1_Meeting.scn
